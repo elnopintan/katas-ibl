@@ -15,8 +15,11 @@ When a propagatos modifies a cell data, the cell must notify to the other propag
 
 (defn get-cell [ & tags]
   "search for a cell with those tags"
-  (with-mongo conn
-    (fetch :cells :where { :tags {:$in tags} })))
+  (let [tag-filters (vec (map (fn [filter]
+                           {:tags { :$all
+                                   filter}}) tags))]
+    (with-mongo conn
+      (fetch :cells :where {:$or tag-filters}))))
 
 (defn modify-cell [cell value]
   "modifies a cell and notifies to propagators"

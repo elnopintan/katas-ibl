@@ -5,20 +5,22 @@
 (defrecord propagator [tags-in f cell-out])
 (defn create-propagator [tags-in f cell-out]
   (let [new-prop (propagator. tags-in f cell-out)]
-    (doseq [tag tags-in]
+    (doseq [tag (concat tags-in)]
               (swap! props
                      (fn [props]
                        (assoc props tag (cons new-prop (props tag))))))))
 
 (defn run-propagator [ _ {:keys [tags-in f cell-out]}]
   (println "propaging " tags-in)
-  (let [values (map :value (get-cell tags-in))
+  (let [cells (get-cell tags-in)
         {value-out :value :as cell-out} (first (get-cell cell-out))]
-      (println "propaging values" values)
-    (if (not-any? (= "nothing") values)
-      (let [new-value (apply f values)]
+   
+    (if (not-any?  #(= "nothing" (:value %)) cells)
+      (let [new-value (apply f cells)]       
+        (println "new-value" new-value)
         (if (not= new-value value-out)
-          (new-data cell-out new-value))))))
+          (new-data cell-out new-value)
+          )))))
       
   
 (defn notify-propagators [tags]
@@ -28,3 +30,5 @@
 (defn new-data [cell value]
   (modify-cell cell value)
   (notify-propagators (:tags cell)))
+
+(defn on-values [f] (fn [& cells] (apply f (map #(:value %) cells))))
