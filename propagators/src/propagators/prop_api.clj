@@ -1,34 +1,38 @@
 (ns propagators.prop-api
-  (use propagators.cells))
-(def props (atom {}))
+  (use propagators.cells)
+  (require [clojure.set :as sets] ))
+(defonce props (atom {}))
 (declare new-data)
-(defrecord propagator [tags-in f cell-out])
+(defrecord propagator [prop-agent tags-in f cell-out-tags])
 (defn create-propagator [tags-in f cell-out]
-  (let [new-prop (propagator. tags-in f cell-out)]
-    (doseq [tag (concat tags-in)]
+  (let [new-prop (propagator. (agent nil) tags-in f cell-out)]
+    (when (empty? (get-cell cell-out)) (apply make-cell cell-out)) 
+    (doseq [tag (apply concat tags-in)]
               (swap! props
                      (fn [props]
-                       (assoc props tag (cons new-prop (props tag))))))))
+                       (assoc props tag (cons new-prop (props tag))))))
+    (run-propagator nil new-prop)))
 
-(defn run-propagator [ _ {:keys [tags-in f cell-out]}]
-  (println "propaging " tags-in)
-  (let [cells (get-cell tags-in)
-        {value-out :value :as cell-out} (first (get-cell cell-out))]
-   
-    (if (not-any?  #(= "nothing" (:value %)) cells)
-      (let [new-value (apply f cells)]       
-        (println "new-value" new-value)
+(defn run-propagator [ _ {:keys [tags-in f cell-out-tags]}]
+  (let [cells (apply get-cell tags-in)
+        values (map #(:value %) cells)
+        {value-out :value :as cell-out} (first (get-cell cell-out-tags))
+        value-out (if (= value-out "nothing") nil value-out)]
+    (if (not-any?  #(= "nothing" %) values)
+      (let [new-value (apply f value-out values)]   
         (if (not= new-value value-out)
           (new-data cell-out new-value)
           )))))
       
-  
+
 (defn notify-propagators [tags]
-  (doseq [tag tags current-prop (@props tag)]
-    (send (agent nil) run-propagator current-prop)))
+  (let [prop-map @props
+        current-props (set (filter identity  (mapcat #(prop-map %) tags)))]
+    (doseq [ {prop-agent :prop-agent tags :tags-in :as current-prop} current-props]
+      (send prop-agent run-propagator current-prop))))
 
 (defn new-data [cell value]
   (modify-cell cell value)
   (notify-propagators (:tags cell)))
 
-(defn on-values [f] (fn [& cells] (apply f (map #(:value %) cells))))
+(defn only-input [f] (fn [ _ & cells] (apply f cells)))

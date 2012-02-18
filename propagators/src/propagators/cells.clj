@@ -7,6 +7,7 @@ When a propagatos modifies a cell data, the cell must notify to the other propag
 (def conn
   "database connection"
   (make-connection "prop-network"))
+
 (defn make-cell [ & tags]
   "creates a new cell with nothing as data"
   (let [ cell { :tags tags :value :nothing } ]
@@ -22,8 +23,12 @@ When a propagatos modifies a cell data, the cell must notify to the other propag
       (fetch :cells :where {:$or tag-filters}))))
 
 (defn modify-cell [cell value]
-  "modifies a cell and notifies to propagators"
+  "modifies a cell"
   (do
     (with-mongo conn
       (update! :cells cell (assoc cell :value value)))))
 
+(defn destroy-cell [cell]
+  "destroys a cell"
+  (with-mongo conn
+    (destroy! :cells cell)))
