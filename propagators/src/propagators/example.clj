@@ -29,7 +29,7 @@
 (defn create-people-propagator []
   (create-propagator [["puerta"]] get-people ["people" "Oeste 1"]))
 
-(defn create-building-popagators []
+(defn create-building-propagators []
   (create-propagator [["people"]] #(assoc %1 :people (count %2)) ["Oeste 1" "summary"])
   (create-propagator [["temp-edificio"]] #(assoc %1 :temperature %2) ["Oeste 1" "summary"]))
 
