@@ -14,13 +14,21 @@ When a propagatos modifies a cell data, the cell must notify to the other propag
     (with-mongo conn
       (insert! :cells cell))))
 
-(defn get-cell [ & tags]
+(defn get-cell [ & tags ]
   "search for a cell with those tags"
   (let [tag-filters (vec (map (fn [filter]
                            {:tags { :$all
                                    filter}}) tags))]
     (with-mongo conn
-      (fetch :cells :where {:$or tag-filters}))))
+      (fetch :cells :where {:$or tag-filters} ))))
+
+(defn get-cell-values [ & tags ]
+  "search for a cell with those tags"
+  (let [tag-filters (vec (map (fn [filter]
+                           {:tags { :$all
+                                   filter}}) tags))]
+    (with-mongo conn
+      (fetch :cells :where {:$or tag-filters} ))))
 
 (defn modify-cell [cell value]
   "modifies a cell"
@@ -32,3 +40,7 @@ When a propagatos modifies a cell data, the cell must notify to the other propag
   "destroys a cell"
   (with-mongo conn
     (destroy! :cells cell)))
+
+(defn destroy-all-cells []
+  "destroys every cell"
+  (with-mongo conn (destroy! :cells {})))

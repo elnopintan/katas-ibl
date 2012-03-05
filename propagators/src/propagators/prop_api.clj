@@ -18,7 +18,7 @@
     (run-propagator nil new-prop)))
 
 (defn run-propagator [ _ {:keys [tags-in f cell-out-tags]}]
-  (let [cells (apply get-cell tags-in)
+  (let [cells (apply get-cell-values tags-in)
         values (map #(:value %) cells)
         {value-out :value :as cell-out} (first (get-cell cell-out-tags))
         value-out (if (= value-out "nothing") nil value-out)]
@@ -40,3 +40,6 @@
   (notify-propagators (:tags cell)))
 
 (defn only-input [f] (fn [ _ & cells] (apply f cells)))
+
+(defn reset-props []
+  (reset! props {}))
