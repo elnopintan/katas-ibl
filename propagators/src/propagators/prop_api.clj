@@ -32,7 +32,7 @@
 (defn notify-propagators [tags]
   (let [prop-map @props
         current-props (set (filter identity  (mapcat #(prop-map %) tags)))]
-    (doseq [ {prop-agent :prop-agent tags :tags-in :as current-prop} current-props]
+    (doseq [ {prop-agent :prop-agent cur-tags :tags-in :as current-prop} current-props :when (every? (set tags) (apply concat cur-tags)) ]
       (send prop-agent run-propagator current-prop))))
 
 (defn new-data [cell value]
