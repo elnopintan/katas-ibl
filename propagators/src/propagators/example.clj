@@ -1,6 +1,7 @@
 (ns propagators.example
   (use propagators.prop-api)
   (use propagators.cells)
+  (use dorothy.core)
   )
 
 (def plantas  ["planta1" "planta2" "planta3"])
@@ -52,4 +53,16 @@
       (create-propagator [["people" (building b)]] #(assoc %1 :people (count %2)) ["summary" (building b)]))
     (create-propagator [["summary"]] (only-input into-summary ) ["city"])))
 
- 
+ (defn show-network []
+   (let  [prop-set (set (for [[_ p-l] @props p p-l ] p))
+          numbered-props (map #(vector (str "p" %1) %2) (range) prop-set)
+          cell-graph (for [[n p] numbered-props
+                           prop-cell (apply get-cell (:tags-in p))]
+                       [(str (:tags prop-cell)) n])
+          prop-graph (for [[n p] numbered-props] [n (str (:cell-out-tags p))])
+          graph-data (vec (concat prop-graph cell-graph))]
+   ;graph-data))
+    (show! (dot (graph graph-data)))))
+
+    
+   
