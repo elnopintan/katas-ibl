@@ -1,17 +1,23 @@
 (ns node-examples.core 
   (:require [cljs.nodejs :as node]))
 
-; Aqui implemento el protocolo ILookup que me permitie
-; usar destructuring con los parametros de Request de Express.
-;Si el Request no hubiera sido Object a pelo lo habria hecho con extend-type
-(deftype ExpressReq [r] 
-    ILookup
-    (-lookup [ _ k]
-      (.param r (name k))))
+
 ;Estado atomico y compartido
 (def cont (atom 0))
 (def express (node/require "express"))
+(def http (node/require "http"))
 (def app (. express (createServer)))
+
+; El request de express usa el prototipo http.IncomingMessage
+; lo guardo en Request
+(def Request (.-IncomingMessage http))
+
+; Aqui implemento el protocolo ILookup que me permite
+; usar destructuring con los parametros de Request de Express.
+(extend-type Request
+    ILookup
+    (-lookup [ r k]
+      (.param r (name k))))
 
 ;Puedo acumular los handlers todos en un mapa, lo que hace que sea menos verboso
 (def resps {
@@ -28,7 +34,7 @@
       (.get path (fn [req res]
                    ;Incremento con cada llamada el contador de forma atomica
                    (swap! cont inc)
-                   (.send res (f (ExpressReq. req)))))))
+                   (.send res (f req))))))
   (.listen app 3000)
   
   (println (str "Express server started on port: "

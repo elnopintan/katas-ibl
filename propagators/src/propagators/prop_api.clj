@@ -6,10 +6,10 @@
 
 (declare new-data run-propagator)
 
-(defrecord propagator [prop-agent tags-in f cell-out-tags])
+(defrecord propagator [id prop-agent tags-in f cell-out-tags])
 
-(defn create-propagator [tags-in f cell-out]
-  (let [new-prop (propagator. (agent nil) tags-in f cell-out)]
+(defn create-propagator [id tags-in f cell-out]
+  (let [new-prop (propagator. id (agent nil) tags-in f cell-out)]
     (when (empty? (get-cell cell-out)) (apply make-cell cell-out)) 
     (doseq [tag (apply concat tags-in)]
               (swap! props

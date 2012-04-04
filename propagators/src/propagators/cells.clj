@@ -13,7 +13,9 @@ When a propagatos modifies a cell data, the cell must notify to the other propag
   (let [ cell { :tags tags :value :nothing } ]
     (with-mongo conn
       (insert! :cells cell))))
-
+(defn get-all-cells []
+  (with-mongo conn
+    (fetch :cells)))
 (defn get-cell [ & tags ]
   "search for a cell with those tags"
   (let [tag-filters (vec (map (fn [filter]
