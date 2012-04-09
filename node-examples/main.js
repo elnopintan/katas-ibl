@@ -8172,37 +8172,22 @@ node_examples.core.Request.prototype.cljs$core$ILookup$ = !0;
 node_examples.core.Request.prototype.cljs$core$ILookup$_lookup = function(a, b) {
   return a.param(cljs.core.name.call(null, b))
 };
-node_examples.core.resps = cljs.core.ObjMap.fromObject(["/hello", "/bye", "/other/:a/:b"], {"/hello":function() {
-  return"Hello World"
-}, "/bye":function() {
-  return"Bye World"
-}, "/other/:a/:b":function(a) {
-  var b = cljs.core.truth_(cljs.core.seq_QMARK_.call(null, a)) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, a = cljs.core.get.call(null, b, "\ufdd0'a"), b = cljs.core.get.call(null, b, "\ufdd0'b");
-  return cljs.core.str.call(null, "The req is ", a, ",", b, ". Visited ", cljs.core.deref.call(null, node_examples.core.cont))
-}});
 node_examples.core._main = function() {
   var a = function() {
     node_examples.core.app.use(node_examples.core.express.logger());
-    var a = cljs.core.seq.call(null, node_examples.core.resps);
-    if(cljs.core.truth_(a)) {
-      var b = cljs.core.first.call(null, a);
-      cljs.core.nth.call(null, b, 0, null);
-      for(cljs.core.nth.call(null, b, 1, null);;) {
-        var e = b, f = cljs.core.nth.call(null, e, 0, null), g = cljs.core.nth.call(null, e, 1, null), h = a, i = node_examples.core.app;
-        i.get(f, function(a, b, c, d, e, f) {
-          return function(a, b) {
-            cljs.core.swap_BANG_.call(null, node_examples.core.cont, cljs.core.inc);
-            return b.send(f.call(null, a))
-          }
-        }(b, a, i, e, f, g, h));
-        b = cljs.core.next.call(null, h);
-        if(cljs.core.truth_(b)) {
-          a = b, b = cljs.core.first.call(null, a)
-        }else {
-          break
-        }
-      }
-    }
+    var a = node_examples.core.app;
+    a.get("/hello", function(a, b) {
+      cljs.core.truth_(cljs.core.seq_QMARK_.call(null, a)) && cljs.core.apply.call(null, cljs.core.hash_map, a);
+      return b.send("Hello World")
+    });
+    a.get("/bye", function(a, b) {
+      cljs.core.truth_(cljs.core.seq_QMARK_.call(null, a)) && cljs.core.apply.call(null, cljs.core.hash_map, a);
+      return b.send("Bye World")
+    });
+    a.get("/other/:a/:b", function(a, b) {
+      var c = cljs.core.truth_(cljs.core.seq_QMARK_.call(null, a)) ? cljs.core.apply.call(null, cljs.core.hash_map, a) : a, g = cljs.core.get.call(null, c, "\ufdd0'a"), c = cljs.core.get.call(null, c, "\ufdd0'b"), g = cljs.core.str.call(null, "The req is ", g, ",", c, ". Visited ", cljs.core.swap_BANG_.call(null, node_examples.core.cont, cljs.core.inc));
+      return b.send(g)
+    });
     node_examples.core.app.listen(3E3);
     return cljs.core.println.call(null, cljs.core.str.call(null, "Express server started on port: ", node_examples.core.app.address().port))
   }, b = function(b) {

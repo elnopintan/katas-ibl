@@ -1,5 +1,6 @@
 (ns node-examples.core 
-  (:require [cljs.nodejs :as node]))
+  (:require [cljs.nodejs :as node])
+  (:require-macros [node-examples.macros :as m :only (routes-for)]))
 
 
 ;Estado atomico y compartido
@@ -19,27 +20,17 @@
     (-lookup [ r k]
       (.param r (name k))))
 
-;Puedo acumular los handlers todos en un mapa, lo que hace que sea menos verboso
-(def resps {
-             "/hello" (fn [_] "Hello World")
-             "/bye"   (fn [_]"Bye World")
-             ;Aqui uso el destructuring. Con poco esfuerzo acabo de mejorar Express ;-)
-             "/other/:a/:b" (fn [{ a :a b :b }] (str "The req is " a "," b ". Visited " @cont))})
-
 (defn -main [& args]
   (.use app (. express (logger)))
-  ;Con doseq puedo iterar por todo el mapa de respuestas
-  (doseq [[path f] resps]
-    (doto app
-      (.get path (fn [req res]
-                   ;Incremento con cada llamada el contador de forma atomica
-                   (swap! cont inc)
-                   (.send res (f req))))))
-  (.listen app 3000)
   
+  ;Esta macro expande las rutas queda mas conciso. Incluso ocupa 20 lineas de codigo javascript menos
+  (m/routes-for app
+            "/hello" [] "Hello World"
+            "/bye"   [] "Bye World"
+            "/other/:a/:b" [a b] (str "The req is " a "," b ". Visited " (swap! cont inc)))
+  
+  (.listen app 3000)  
   (println (str "Express server started on port: "
                 (.-port (. app (address))))))
 
 (set! *main-cli-fn* -main)
-
-;Y eso que no he usado macros...
