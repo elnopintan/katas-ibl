@@ -1,16 +1,19 @@
 (ns cljproxy.core
   (:gen-class)
-  (use lamina.core aleph.http)
+  (use lamina.core aleph.http gloss.core gloss.io )
   (import java.net.URL))
 
+(def frame (repeat 1000 :byte))
 (defn proxy-handler [dest]
-  (fn  [channel { :keys [uri body request-method] :as request}]
-    (let [resp   (http-request
+  (fn  [{ :keys [uri body request-method] :as request}]
+    (let [resp   (sync-http-request
             {:request-method request-method
              :url (str dest uri)
-             :body body})] 
-      (enqueue channel @resp))))
+             :body body
+             :frame frame})
+          resp (assoc resp :body (map* #(encode (compile-frame frame) %) (:body resp)))] 
+      resp)))
 
 (defn -main
   [ dest & args]
-  (start-http-server (proxy-handler dest) {:port 8080}))
+  (start-http-server (wrap-ring-handler (proxy-handler dest)) {:port 8080}))
