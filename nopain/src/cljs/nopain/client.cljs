@@ -1,4 +1,4 @@
-(ns client.cljs 
+(ns nopain.client 
   (:require [fetch.remotes :as remotes]
             [goog.events :as events]
             [goog.Timer :as timer]
@@ -19,7 +19,8 @@
                (if r
                  (do
                    (reset! curr-slide {:name (:name r) :pos (:pos r)})
-                   (em/at js/document ["#main"] (em/content (:html r))))))))
+                   (em/at js/document ["#main"] (em/content (:html r)))
+                   (.highlight js/SyntaxHighlighter))))))
     
 
  

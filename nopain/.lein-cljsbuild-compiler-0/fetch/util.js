@@ -13,11 +13,11 @@ if(cljs.core.string_QMARK_.call(null,x))
 {return cljs.core.name.call(null,x);
 } else
 {if(cljs.core.map_QMARK_.call(null,x))
-{return cljs.core.reduce.call(null,(function (m,p__10487){
-var vec__10488__10489 = p__10487;
-var k__10490 = cljs.core.nth.call(null,vec__10488__10489,0,null);
-var v__10491 = cljs.core.nth.call(null,vec__10488__10489,1,null);
-return cljs.core.assoc.call(null,m,clj__GT_js.call(null,k__10490),clj__GT_js.call(null,v__10491));
+{return cljs.core.reduce.call(null,(function (m,p__12764){
+var vec__12765__12766 = p__12764;
+var k__12767 = cljs.core.nth.call(null,vec__12765__12766,0,null);
+var v__12768 = cljs.core.nth.call(null,vec__12765__12766,1,null);
+return cljs.core.assoc.call(null,m,clj__GT_js.call(null,k__12767),clj__GT_js.call(null,v__12768));
 }),cljs.core.ObjMap.EMPTY,x).strobj;
 } else
 {if(cljs.core.coll_QMARK_.call(null,x))

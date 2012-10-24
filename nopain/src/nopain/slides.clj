@@ -1,6 +1,7 @@
 (ns nopain.slides
   (:use [hiccup.core :only [html]]
         [hiccup.page :only [html5]]
+        [hiccup.util :only [escape-html]]
         [noir.fetch.remotes :only [defremote]])
   (:require [clojure.string :as s]))
 
@@ -19,11 +20,8 @@
   [:ul  (map (fn [a] [:li a]) auths )])
 
 (defmethod render-slide :code [[_ code]]
-  [:div
-   (interpose [:br]
-              (s/split
-               (.replaceAll
-                (clojure.repl/source-fn (symbol code)) " " "&nbsp;") #"\n"))])
+  [:pre {:class "brush: clojure;"}
+   (escape-html (clojure.repl/source-fn (symbol code)))])
 
 (defn render-slides [text pos]
   (map render-slide (take pos text)))
@@ -34,7 +32,6 @@
       {:name curr-name
        :pos curr-pos
        :html (html (render-slides text curr-pos))}))) 
-
 
 (defn new-slide [slide]
   (reset! current-slide {:pos 0 :data slide}))

@@ -4,7 +4,7 @@
         ring.adapter.jetty
         ring.util.response
         [hiccup.core :only [html]]
-        [hiccup.page :only [html5 include-js]]
+        [hiccup.page :only [html5 include-js include-css]]
         [noir.fetch.remotes :only [defremote call-remote safe-read]])
   (:require [compojure.handler :as handler]
             [compojure.route :as route]))
@@ -13,7 +13,13 @@
 (defroutes app-routes
   (GET "/" [] (assoc (response (html5
                                 (include-js "/main.js")
-                                [:div#main "hello"]))
+                                (include-js "/shCore.js")
+                                (include-js "/shBrushClojure.js") 
+                                (include-css "/shCoreDefault.css")
+                                (include-css "/shClojureExtra.css")
+                                [:script {:type "text/javascript"}
+                                 "SyntaxHighlighter.all();"]
+                                [:div#main ]))
                :session {:saludo "hola"}))
        
   (GET "/current" [] (get-slide))

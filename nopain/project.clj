@@ -15,8 +15,8 @@
       [
        {:source-path "src/cljs/nopain"
         :compiler {:output-to "resources/public/main.js"
-                   :optimizations :advanced
-                   :pretty-print false
+                   :optimizations :whitespace
+                   :pretty-print true
                    }}]}
   :profiles
   {:dev {:dependencies [[ring-mock "0.1.3"]]}})
