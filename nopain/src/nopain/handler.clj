@@ -38,4 +38,4 @@
 
 
 (defn run-server []
-  (send (agent nil) (fn [_] (run-jetty app {:port 3000}))))
+  (send (agent nil) (fn [_] (run-jetty #'app {:port 3000}))))

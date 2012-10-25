@@ -8,7 +8,7 @@
                  [ring/ring-jetty-adapter "1.1.6"]
                  [enfocus "1.0.0-beta1"]
                  [hiccup "1.0.1"]]
-  :plugins [[lein-ring "0.7.3"]]
+  :plugins [[lein-ring "0.7.3"] [lein-cljsbuild "0.2.9"]]
   :ring {:handler nopain.handler/app}
   :cljsbuild {
     :builds 

@@ -21318,6 +21318,24 @@ cljs.core.UUID.prototype.toString = function() {
   return cljs.core.pr_str.call(null, this__11639)
 };
 cljs.core.UUID;
+goog.provide("nopain.execs");
+goog.require("cljs.core");
+nopain.execs.exec = cljs.core.atom.call(null, cljs.core.ObjMap.EMPTY);
+nopain.execs.add_f = function add_f(n, f, s) {
+  return cljs.core.swap_BANG_.call(null, nopain.execs.exec, cljs.core.assoc, n, cljs.core.PersistentVector.fromArray([f, s], true))
+};
+nopain.execs.run = function run(n) {
+  var vec__7375__7376 = n.call(null, cljs.core.deref.call(null, nopain.execs.exec));
+  var f__7377 = cljs.core.nth.call(null, vec__7375__7376, 0, null);
+  var ___7378 = cljs.core.nth.call(null, vec__7375__7376, 1, null);
+  return f__7377.call(null)
+};
+nopain.execs.stop = function stop(n) {
+  var vec__7383__7384 = n.call(null, cljs.core.deref.call(null, nopain.execs.exec));
+  var ___7385 = cljs.core.nth.call(null, vec__7383__7384, 0, null);
+  var s__7386 = cljs.core.nth.call(null, vec__7383__7384, 1, null);
+  return s__7386.call(null)
+};
 goog.provide("goog.dom.BrowserFeature");
 goog.require("goog.userAgent");
 goog.dom.BrowserFeature = {CAN_ADD_NAME_OR_TYPE_ATTRIBUTES:!goog.userAgent.IE || goog.userAgent.isVersion("9"), CAN_USE_CHILDREN_ATTRIBUTE:!goog.userAgent.GECKO && !goog.userAgent.IE || goog.userAgent.IE && goog.userAgent.isVersion("9") || goog.userAgent.GECKO && goog.userAgent.isVersion("1.9.1"), CAN_USE_INNER_TEXT:goog.userAgent.IE && !goog.userAgent.isVersion("9"), INNER_HTML_NEEDS_SCOPED_ELEMENT:goog.userAgent.IE};
@@ -31078,6 +31096,27 @@ Text.prototype.domina$DomContent$nodes$arity$1 = function(content) {
 Text.prototype.domina$DomContent$single_node$arity$1 = function(content) {
   return content
 };
+goog.provide("nopain.counter");
+goog.require("cljs.core");
+goog.require("nopain.execs");
+goog.require("enfocus.core");
+goog.require("goog.Timer");
+goog.require("goog.events");
+nopain.counter.num = cljs.core.atom.call(null, 1);
+nopain.counter.timer = new goog.Timer(20);
+nopain.counter.paint = function paint() {
+  return enfocus.core.at.call(null, document, cljs.core.PersistentVector.fromArray(["#counter"], true), enfocus.core.en_content.call(null, [cljs.core.str(cljs.core.swap_BANG_.call(null, nopain.counter.num, function(p1__7370_SHARP_) {
+    return(p1__7370_SHARP_ + p1__7370_SHARP_) % 1E6
+  }))].join("")))
+};
+nopain.counter.count = function count() {
+  nopain.counter.timer.start();
+  return goog.events.listen(nopain.counter.timer, goog.Timer.TICK, nopain.counter.paint)
+};
+nopain.counter.stop_count = function stop_count() {
+  return nopain.counter.timer.stop()
+};
+nopain.execs.add_f.call(null, "counter", nopain.counter.count, nopain.counter.stop_count);
 goog.provide("cljs.reader");
 goog.require("cljs.core");
 goog.require("goog.string");
@@ -32924,6 +32963,8 @@ fetch.remotes.remote_callback = function remote_callback(remote, params, callbac
 };
 goog.provide("nopain.client");
 goog.require("cljs.core");
+goog.require("nopain.counter");
+goog.require("nopain.execs");
 goog.require("enfocus.core");
 goog.require("goog.Timer");
 goog.require("goog.events");
@@ -32932,14 +32973,26 @@ nopain.client.timer = new goog.Timer(2E3);
 nopain.client.timer.start();
 nopain.client.curr_slide = cljs.core.atom.call(null, cljs.core.ObjMap.fromObject(["\ufdd0'name", "\ufdd0'pos"], {"\ufdd0'name":"", "\ufdd0'pos":-1}));
 nopain.client.refreshSlides = function refreshSlides() {
-  var map__7695__7696 = cljs.core.deref.call(null, nopain.client.curr_slide);
-  var map__7695__7697 = cljs.core.seq_QMARK_.call(null, map__7695__7696) ? cljs.core.apply.call(null, cljs.core.hash_map, map__7695__7696) : map__7695__7696;
-  var pos__7698 = cljs.core._lookup.call(null, map__7695__7697, "\ufdd0'pos", null);
-  var name__7699 = cljs.core._lookup.call(null, map__7695__7697, "\ufdd0'name", null);
-  return fetch.remotes.remote_callback.call(null, "get-slide", cljs.core.PersistentVector.fromArray([name__7699, pos__7698], true), function(r) {
+  var map__7699__7700 = cljs.core.deref.call(null, nopain.client.curr_slide);
+  var map__7699__7701 = cljs.core.seq_QMARK_.call(null, map__7699__7700) ? cljs.core.apply.call(null, cljs.core.hash_map, map__7699__7700) : map__7699__7700;
+  var pos__7702 = cljs.core._lookup.call(null, map__7699__7701, "\ufdd0'pos", null);
+  var name__7703 = cljs.core._lookup.call(null, map__7699__7701, "\ufdd0'name", null);
+  return fetch.remotes.remote_callback.call(null, "get-slide", cljs.core.PersistentVector.fromArray([name__7703, pos__7702], true), function(r) {
     if(cljs.core.truth_(r)) {
-      cljs.core.reset_BANG_.call(null, nopain.client.curr_slide, cljs.core.ObjMap.fromObject(["\ufdd0'name", "\ufdd0'pos"], {"\ufdd0'name":(new cljs.core.Keyword("\ufdd0'name")).call(null, r), "\ufdd0'pos":(new cljs.core.Keyword("\ufdd0'pos")).call(null, r)}));
+      var temp__3971__auto____7704 = (new cljs.core.Keyword("\ufdd0'run")).call(null, cljs.core.deref.call(null, nopain.client.curr_slide));
+      if(cljs.core.truth_(temp__3971__auto____7704)) {
+        var f__7705 = temp__3971__auto____7704;
+        nopain.execs.stop.call(null, f__7705)
+      }else {
+      }
+      cljs.core.reset_BANG_.call(null, nopain.client.curr_slide, cljs.core.ObjMap.fromObject(["\ufdd0'name", "\ufdd0'pos", "\ufdd0'run"], {"\ufdd0'name":(new cljs.core.Keyword("\ufdd0'name")).call(null, r), "\ufdd0'pos":(new cljs.core.Keyword("\ufdd0'pos")).call(null, r), "\ufdd0'run":(new cljs.core.Keyword("\ufdd0'run")).call(null, r)}));
       enfocus.core.at.call(null, document, cljs.core.PersistentVector.fromArray(["#main"], true), enfocus.core.en_content.call(null, (new cljs.core.Keyword("\ufdd0'html")).call(null, r)));
+      var temp__3971__auto____7706 = (new cljs.core.Keyword("\ufdd0'run")).call(null, r);
+      if(cljs.core.truth_(temp__3971__auto____7706)) {
+        var f__7707 = temp__3971__auto____7706;
+        nopain.execs.run.call(null, f__7707)
+      }else {
+      }
       return SyntaxHighlighter.highlight()
     }else {
       return null

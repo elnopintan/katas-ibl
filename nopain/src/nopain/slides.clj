@@ -23,14 +23,23 @@
   [:pre {:class "brush: clojure;"}
    (escape-html (clojure.repl/source-fn (symbol code)))])
 
+(defmethod render-slide :i [[_ data]]
+  [:ul.i [:li data]])
+(defmethod render-slide :ii [[_ data]]
+  [:ul.ii [:ul [:li data]]])
+
+(defmethod render-slide :run [[_ fn]]
+  [:div.run {:id fn}])
+
 (defn render-slides [text pos]
-  (map render-slide (take pos text)))
+  (map render-slide (take (inc pos) text)))
 
 (defremote get-slide [name pos]
-  (let [{curr-pos :pos {curr-name :name text :text} :data} @current-slide]
+  (let [{curr-pos :pos {curr-name :name text :text f :run} :data} @current-slide]
     (if (or (not= name curr-name) (not= pos curr-pos))
       {:name curr-name
        :pos curr-pos
+       :run f
        :html (html (render-slides text curr-pos))}))) 
 
 (defn new-slide [slide]

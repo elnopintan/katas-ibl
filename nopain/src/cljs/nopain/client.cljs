@@ -3,6 +3,8 @@
             [goog.events :as events]
             [goog.Timer :as timer]
             [enfocus.core :as ef]
+            [nopain.execs :as ex]
+            [nopain.counter :as c]
             )
   (:require-macros [fetch.macros :as fm]
                    [enfocus.macros :as em]
@@ -13,13 +15,17 @@
 
 (def curr-slide (atom {:name "" :pos -1}))
 
+
 (defn refreshSlides []
   (let [{:keys [name pos]} @curr-slide]
     (fm/remote (get-slide name pos) [r]
                (if r
                  (do
-                   (reset! curr-slide {:name (:name r) :pos (:pos r)})
+                   (if-let [f (:run @curr-slide)] (ex/stop f))
+                   (reset! curr-slide {:name (:name r) :pos (:pos r) :run (:run r)})
                    (em/at js/document ["#main"] (em/content (:html r)))
+                   (if-let [ f (:run r)]
+                     (ex/run f))
                    (.highlight js/SyntaxHighlighter))))))
     
 
