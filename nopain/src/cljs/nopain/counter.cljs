@@ -9,7 +9,14 @@
 
 (def num (atom 1))
 (def timer (goog.Timer. 20))
-(defn paint [] (em/at js/document ["#counter"] (em/content (str (swap! num #(mod ( + % %) 1000000)))))) 
+
+(defn change-count (fn [c]
+                     (mod (+ c c) 1000000)))
+
+(defn paint [] (em/at js/document ["#counter"]
+                      (em/content
+                       (str (swap! num change-count)))))
+
 (defn count [] (.start timer)
   (events/listen timer goog.Timer/TICK paint))
 

@@ -47,3 +47,14 @@
 
 (defn next-slide []
   (swap! current-slide update-in [:pos] inc))
+
+(defn insert-in-slides [slide]
+  (swap! current-slide
+         (fn [{{text :text} :data pos :pos :as v}]
+           (-> v
+               (update-in [:pos] inc)
+               (update-in [:data :text]
+                          (fn [_]
+                            (concat (take (inc pos) text)
+                                    [slide]
+                                    (drop (inc pos) text))))))))
