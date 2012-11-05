@@ -4,14 +4,13 @@
             [enfocus.core :as ef]
             [nopain.execs :as ex]
             )
-  (:require-macros [enfocus.macros :as em]
-                   ))
+  (:require-macros [enfocus.macros :as em]))
 
 (def num (atom 1))
 (def timer (goog.Timer. 20))
 
-(defn change-count (fn [c]
-                     (mod (+ c c) 1000000)))
+(defn change-count [c]
+                     (mod (+ c c) 1000000))
 
 (defn paint [] (em/at js/document ["#counter"]
                       (em/content

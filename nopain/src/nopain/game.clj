@@ -1,4 +1,6 @@
-(ns nopain.game)
+(ns nopain.game
+  (:use [noir.fetch.remotes :only [defremote]])
+  )
 
 (def players (atom {}))
 (def news (agent []))
@@ -21,5 +23,5 @@
          (notify (str thief " couldn't steal to " victim))
          @(current-players thief))))))
 
-
+(defremote register [name] true)
 

@@ -6,10 +6,11 @@ goog.require('goog.Timer');
 goog.require('goog.events');
 nopain.counter.num = cljs.core.atom.call(null,1);
 nopain.counter.timer = (new goog.Timer(20));
+nopain.counter.change_count = (function change_count(c){
+return ((c + c) % 1000000);
+});
 nopain.counter.paint = (function paint(){
-return enfocus.core.at.call(null,document,cljs.core.PersistentVector.fromArray(["#counter"], true),enfocus.core.en_content.call(null,[cljs.core.str(cljs.core.swap_BANG_.call(null,nopain.counter.num,(function (p1__7370_SHARP_){
-return ((p1__7370_SHARP_ + p1__7370_SHARP_) % 1000000);
-})))].join('')));
+return enfocus.core.at.call(null,document,cljs.core.PersistentVector.fromArray(["#counter"], true),enfocus.core.en_content.call(null,[cljs.core.str(cljs.core.swap_BANG_.call(null,nopain.counter.num,nopain.counter.change_count))].join('')));
 });
 nopain.counter.count = (function count(){
 nopain.counter.timer.start();

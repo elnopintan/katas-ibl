@@ -13,6 +13,15 @@
    :run "counter"
    :text [[:title [:div#counter 0]]]})
 
+(def game
+  {:name "game"
+   :run "game"
+   :text [[:title "Juego"]
+          [:i [:div#register
+               [:input#registerinput "" ]
+               [:button#registerbutton "registrate" ]]]]})
+
+
 (def resolve-counter
   {:name "resolve counter"
    :text [[:title "Resolviendo el problema del contador"]]
