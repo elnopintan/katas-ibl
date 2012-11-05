@@ -30,4 +30,4 @@
   true)
 
 (defremote get-players []
-  (into #{} (keys @players)))
+  (into {} (keys @players)))

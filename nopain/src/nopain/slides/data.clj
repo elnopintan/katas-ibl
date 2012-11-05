@@ -17,9 +17,11 @@
   {:name "game"
    :run "game"
    :text [[:title "Juego"]
-          [:i [:div#register
+          [:i [:div
+               [:div#register
                [:input#registerinput "" ]
-               [:button#registerbutton "registrate" ]]]]})
+                [:button#registerbutton "registrate" ]]
+               [:div#players]]]]})
 
 
 (def resolve-counter

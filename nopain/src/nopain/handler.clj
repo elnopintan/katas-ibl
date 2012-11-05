@@ -7,7 +7,8 @@
         [hiccup.page :only [html5 include-js include-css]]
         [noir.fetch.remotes :only [defremote call-remote safe-read]])
   (:require [compojure.handler :as handler]
-            [compojure.route :as route]))
+            [compojure.route :as route]
+            nopain.game))
 
 
 (defroutes app-routes
@@ -23,6 +24,7 @@
                :session {:saludo "hola"}))
        
   (GET "/current" [] (get-slide))
+  (GET "/player" [] (html [:div.player [:h3 ""][:span.coins ""]]))
   (ANY "/_fetch" {{:keys [remote params]} :params}
        (let [params (safe-read params)
              remote (keyword remote)]
