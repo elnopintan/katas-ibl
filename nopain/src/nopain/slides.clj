@@ -25,11 +25,12 @@
 
 (defmethod render-slide :i [[_ data]]
   [:ul.i [:li data]])
+
 (defmethod render-slide :ii [[_ data]]
   [:ul.ii [:ul [:li data]]])
 
-(defmethod render-slide :run [[_ fn]]
-  [:div.run {:id fn}])
+(defmethod render-slide :page [[_ data]]
+  data)
 
 (defn render-slides [text pos]
   (map render-slide (take (inc pos) text)))
@@ -58,3 +59,4 @@
                             (concat (take (inc pos) text)
                                     [slide]
                                     (drop (inc pos) text))))))))
+

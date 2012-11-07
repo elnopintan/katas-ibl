@@ -22,9 +22,11 @@
                                  "SyntaxHighlighter.all();"]
                                 [:div#main ]))
                :session {:saludo "hola"}))
-       
+
   (GET "/current" [] (get-slide))
-  (GET "/player" [] (html [:div.player [:h3 ""][:span.coins ""]]))
+  (GET "/player" [] (html [:div.player [:h3 ""][:button "Roba!"]]))
+  (GET "/thief" [] (html [:div [:div.name][:span#coins]]))
+  (GET "/new" [] (html [:li.new ""]))
   (ANY "/_fetch" {{:keys [remote params]} :params}
        (let [params (safe-read params)
              remote (keyword remote)]
@@ -36,8 +38,9 @@
   (apply + nums))
 
 (def app
-  (handler/site app-routes))
+  (handler/site #'app-routes))
 
 
 (defn run-server []
   (send (agent nil) (fn [_] (run-jetty #'app {:port 3000}))))
+

@@ -1,0 +1,52 @@
+(ns mirrors.core
+  (import java.lang.Math)
+  )
+
+(defn -main
+  "I don't do a whole lot."
+  [& args]
+  (println "Hello, World!"))
+
+(defn inf-div [a b]
+  (cond (= b 0) :inf
+        (= a :inf) :inf
+        (= b :inf) 0
+        :else (/ a b)))
+
+(defn int-mul [a b]
+  (cond (= b :inf) :inf
+        (= a :inf) :inf
+        :else (* a b)))
+(defn int-inf [a]
+  (if (= a :inf) :inf (int a)))
+
+(defn borders  [l]
+  (let [-x (- 0 l)
+        +x l
+        -y (- 0 l)
+        +y l ]
+     (concat
+     (map #(vector -x %) (range -y (inc +y)))
+     (map #(vector +x %) (range -y (inc +y)))
+     (map #(vector -y %) (range -x (inc +x)))
+     (map #(vector +y %) (range -x (inc +x))))))
+
+(defn ray-seq [l n]
+  (if (= n 0)
+    (repeat 0)
+    (range 0 (+ n (/ n (Math/abs n))) (/ n (* 2 l)))))
+
+(defn ray [ l [x y] [bx by]]
+  (map #(vector (int (+ x %1)) (int (+ y %2)))
+       (ray-seq l bx)
+       (ray-seq l by)))
+
+(defn ray-pars [ray]
+  (partition 2  1 ray))
+
+
+(defn get-x [n p]
+  (int-inf (inf-mul n p)))
+
+(defn get-y [n p]
+  (int-inf (inf-mul n (inf-div 1 p))))

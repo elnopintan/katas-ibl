@@ -8,6 +8,7 @@
     [:authors ["Ignacio  Blasco López" "Sebastian Ortega Torres"]]]})
 
 
+
 (def counter
   {:name "counter"
    :run "counter"
@@ -17,11 +18,13 @@
   {:name "game"
    :run "game"
    :text [[:title "Juego"]
-          [:i [:div
+          [:page 
+           [:div
                [:div#register
                [:input#registerinput "" ]
                 [:button#registerbutton "registrate" ]]
-               [:div#players]]]]})
+               [:div#players]
+               [:ul#news]]]]})
 
 
 (def resolve-counter
@@ -30,7 +33,7 @@
    })
 
 
-(def identiy-value
+(def identity-value
   {:name "identity-value"
    :text [[:title "Identidad y Valor"]
           [:i "Valor"]
@@ -80,8 +83,9 @@
           [:i "Se lee"]
           [:code "nopain.slides.atom-example/read-count"]
           [:i "Se puede resetear"]
-          [:code "nopain.slides.atom-example/reset!"]
+          [:code "nopain.slides.atom-example/set-count"]
           [:i "Se puede modificar"]
           [:code "nopain.slides.atom-example/change-count"]
           [:code "nopain.slides.atom-example/do-count"]
           ]})
+
