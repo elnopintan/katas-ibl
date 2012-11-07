@@ -1,7 +1,8 @@
 (ns nopain.slides.presentation
   (:use nopain.handler)
   (:use nopain.slides)
-  (:require [nopain.slides.data :as d]))
+  (:require [nopain.slides.data :as d]
+            [nopain.game :as g]))
 
 
 (run-server)
@@ -29,4 +30,11 @@
 
 (new-slide d/game)
 (next-slide)
+
+(new-slide d/referencia)
+(next-slide)
+
+
+
+
 

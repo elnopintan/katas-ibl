@@ -1,4 +1,6 @@
-(ns nopain.slides.data)
+(ns nopain.slides.data
+  (:require nopain.slides.atom-example)
+  (:require nopain.game))
 
 (def intro
   {:name "intro"
@@ -76,8 +78,8 @@
           [:title "FIN"]]})
 
 (def atomo
-  {:name "El atomo"
-   :text [[:title "El atomo"]
+  {:name "Atom"
+   :text [[:title "Atom"]
           [:i "Se construye"]
           [:code "nopain.slides.atom-example/num"]
           [:i "Se lee"]
@@ -89,3 +91,25 @@
           [:code "nopain.slides.atom-example/do-count"]
           ]})
 
+
+(def referencia
+  {:name "Ref"
+   :text [[:title "Ref"]
+          [:i "Son necesarios para sincronizar cambios"]
+          [:i "Se construye"]
+          [:code "nopain.game/players"]
+          [:code "nopain.game/new-player"]
+          [:i "Como se usa"]
+          [:ii "Se debe usar dentro de una transaccion"]
+          [:code-snippet "(dosync ...)"]
+          [:ii "Se resetea"]
+          [:code-snippet "(ref-set mi-ref 1)"]
+          [:ii "Se modifica"]
+          [:code-snippet "(alter mi-ref + 1)"]
+          [:i "Ejemplo en el juego"]
+          [:code "nopain.game/steal-coins"]]})
+
+(def agente
+  {:name "Agente"
+   :text [[:title "Agent"]
+          ]})

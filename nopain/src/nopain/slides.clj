@@ -23,6 +23,10 @@
   [:pre {:class "brush: clojure;"}
    (escape-html (clojure.repl/source-fn (symbol code)))])
 
+(defmethod render-slide :code-snippet [[_ code]]
+  [:pre {:class "brush: clojure;"}
+   (escape-html code)])
+
 (defmethod render-slide :i [[_ data]]
   [:ul.i [:li data]])
 

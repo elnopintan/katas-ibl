@@ -15,7 +15,7 @@
       [
        {:source-path "src/cljs/nopain"
         :compiler {:output-to "resources/public/main.js"
-                   :optimizations :whitespace
+                   :optimizations :advanced
                    :pretty-print true
                    }}]}
   :profiles

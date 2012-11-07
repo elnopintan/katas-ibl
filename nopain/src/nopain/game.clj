@@ -26,9 +26,16 @@
          (notify (str thief " couldn't steal to " victim))
          @(current-players thief))))))
 
+(defn coins? [p-name]
+	@(@players p-name))
+
 (defremote register [p-name]
   (new-player p-name)
-  @(@players p-name))
+  (coins? p-name))
+
+(defremote get-coins [p-name]
+  (coins? p-name))
+
 
 (defremote get-players []
   (into #{} (keys @players)))

@@ -17,11 +17,14 @@
 (def player-name (atom nil))
 (def player-set (atom #{}))
 
+(defn fill-coins [n]
+  (em/at js/document ["#coins"] (em/content (str n " Coins"))))
+
 (defn steal [event]
   (let [{victim :victim} (em/from (.-parentNode (.-currentTarget event))
                               :victim ["h3"] (em/get-text))]
    (fm/remote (steal @player-name victim) [n]
-              (em/at js/document ["#coins"] (em/content (str n " Coins"))))))
+              (fill-coins n))))
 
 (em/deftemplate t-player "/player" [p-name]
   ["h3"] (em/content p-name)
@@ -41,6 +44,10 @@
     (doseq [player added-players]
       (when (not= player @player-name)
       	(em/at js/document ["#players"] (em/append (t-player player)))))))
+
+(defn get-coins []
+  (fm/remote (get-coins @player-name) [coins]
+             (fill-coins coins)))
 
 
 (defn register []
@@ -68,6 +75,7 @@
 (defn paint-game []
   (fm/remote (get-players) [new-players]
              (update-news)
+             (get-coins)
              (update-players new-players)))
 
 (events/listen timer goog.Timer/TICK paint-game)
