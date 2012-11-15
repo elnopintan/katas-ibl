@@ -70,7 +70,9 @@
 
 (defn start-game [] (setup))
 
-(defn stop-game [] (.stop timer))
+(defn stop-game [] 
+  (.stop timer)
+  (reset! player-set #{}))
 
 (defn paint-game []
   (fm/remote (get-players) [new-players]

@@ -9,6 +9,13 @@
     [:image "/clojure-icon.gif"]
     [:authors ["Ignacio  Blasco López" "Sebastian Ortega Torres"]]]})
 
+(def anim
+  {:name "anim"
+   :text [
+          [:image "/Valor1.jpg"]
+          [:anim "/Valor2.jpg"]
+          [:anim "/Valor3.jpg"]
+          ]})
 
 
 (def counter
@@ -28,6 +35,9 @@
                [:div#players]
                [:ul#news]]]]})
 
+(def game-result
+  {:name "game-result"
+   :text [[:title "Resultado del juego"]]})
 
 (def resolve-counter
   {:name "resolve counter"
@@ -38,15 +48,27 @@
 (def identity-value
   {:name "identity-value"
    :text [[:title "Identidad y Valor"]
-          [:i "Valor"]
-          [:ii "No cambia"]
-          [:ii "Una funcion crea un nuevo valor"]
-          [:ii "(insert [a, b] 1 c) => [a, c]"]
-          [:ii "[a, c] es un nuevo vector"]
-          [:i "Identidad"]
-          [:ii "Es un puntero que apunta a un valor"]
-          [:ii "Puede apuntar a otro valor a lo largo del tiempo"]
-          [:ii "Al leerlo devuelve su valor de ese instante"]
+          [:i "Modelo Imperativo"]
+          [:ii "Modificar variables"]
+          [:image "/Variable1.jpg"]
+          [:anim "/Variable2.jpg"]
+          [:anim "/Variable3.jpg"]
+          [:anim "/Variable4.jpg"]
+          [:i "Identidad y valor mezcladas"]
+          ]}
+  )
+
+(def identity-value-2
+  {:name "identity-value 2"
+   :text [[:title "Identidad y Valor"]
+          [:i "Modelo Funcional"]
+          [:ii "Combinar funciones"]
+          [:ii "Generar un valor a partir del siguiente"]
+          [:image "/Valor1.jpg"]
+          [:anim "/Valor2.jpg"]
+          [:anim "/Valor3.jpg"]
+          [:anim "/Valor4.jpg"]
+          [:i "No es suficiente"]
           ]}
   )
 
@@ -80,36 +102,49 @@
 (def atomo
   {:name "Atom"
    :text [[:title "Atom"]
-          [:i "Se construye"]
+          [:image "/Atom.jpg"]
           [:code "nopain.slides.atom-example/num"]
-          [:i "Se lee"]
-          [:code "nopain.slides.atom-example/read-count"]
-          [:i "Se puede resetear"]
-          [:code "nopain.slides.atom-example/set-count"]
-          [:i "Se puede modificar"]
+          [:anim "/Atom1.jpg"]
           [:code "nopain.slides.atom-example/change-count"]
           [:code "nopain.slides.atom-example/do-count"]
+          [:anim "/Atom2.jpg"]
+          [:code "nopain.slides.atom-example/read-count"]
+          [:anim "/Atom3.jpg"]
           ]})
+(def atomo-2
+  {:name "Atom-2"
+   :text [[:title "Atom"]
+          [:image "/AtomC1.jpg"]
+          [:anim "/AtomC2.jpg"]
+          [:anim "/AtomC3.jpg"]
+           ]})
 
 
-(def referencia
+(defn referencia []
   {:name "Ref"
    :text [[:title "Ref"]
-          [:i "Son necesarios para sincronizar cambios"]
-          [:i "Se construye"]
-          [:code "nopain.game/players"]
+          [:image "/Ref1.jpg"]
           [:code "nopain.game/new-player"]
-          [:i "Como se usa"]
-          [:ii "Se debe usar dentro de una transaccion"]
           [:code-snippet "(dosync ...)"]
-          [:ii "Se resetea"]
-          [:code-snippet "(ref-set mi-ref 1)"]
-          [:ii "Se modifica"]
           [:code-snippet "(alter mi-ref + 1)"]
+          [:anim "/Ref2.jpg"]
+          [:anim "/Ref3.jpg"]
           [:i "Ejemplo en el juego"]
-          [:code "nopain.game/steal-coins"]]})
+          [:code "nopain.game/steal-coins"]
+          [:code-snippet (str "players " (into {} (take 2 @nopain.game/players)) "") ]]})
 
+
+(str @nopain.game/players)
 (def agente
   {:name "Agente"
    :text [[:title "Agent"]
+          [:image "/Agent1.jpg"]
+          [:code "nopain.game/news"]
+          [:code "nopain.game/notify"]
+          [:anim "/Agent2.jpg"]
+          [:code-snippet "(send-off my-agent #(write file %) \"Hola mundo\")"]
           ]})
+
+(def agradecimiento
+  {:name "Gracias"
+   :text [[:title "Muchas Gracias"]]})

@@ -16,6 +16,7 @@
        {:source-path "src/cljs/nopain"
         :compiler {:output-to "resources/public/main.js"
                    :optimizations :advanced
+                   :externs ["resources/public/externs.js"]
                    :pretty-print true
                    }}]}
   :profiles

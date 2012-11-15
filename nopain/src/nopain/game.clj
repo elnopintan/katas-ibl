@@ -4,15 +4,19 @@
 
 (def players (atom {}))
 (def news (agent []))
-(defn new-player[name]
+
+(defn new-player [name]
+  (ref 100))
+
+(defn add-player[name]
   (swap! players 
          #(if (not (% name)) (assoc % name (ref 100)) %)))	
 
 
 
-(defn notify [text] (send news (fn[v]
-                            (vec
-                             (drop (- (count v) 10) (conj v text))))))
+(defn notify [text] 
+  (send news (fn[v]
+          (vec (take-last 10 v)))))
 
 (defn steal-coins [victim thief]
   (let [current-players @players]
@@ -30,7 +34,7 @@
 	@(@players p-name))
 
 (defremote register [p-name]
-  (new-player p-name)
+  (add-player p-name)
   (coins? p-name))
 
 (defremote get-coins [p-name]

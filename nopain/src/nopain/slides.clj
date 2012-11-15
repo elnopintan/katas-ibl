@@ -6,38 +6,66 @@
   (:require [clojure.string :as s]))
 
 
-(def current-slide (atom {:pos 0 :name "init" :text [[:title ""]]}))
+(def current-slide
+  "This atom stores the current slide"
+  (atom {:pos 0 :name "init" :text [[:title ""]]}))
 
-(defmulti render-slide first)
+; Rendering slides 
+
+(defn append-slide [data] 
+  (fn [slides] (conj slides data)))
+
+(defn set-image [image]
+  [:img.image {:src image}])
+
+(defn animation [image] 
+  (letfn [(new-frame [frame] 
+            (if (= :img.image (first frame)) 
+                     (set-image image)
+                     frame))]
+  	(fn [slides] 
+      (into [] (map new-frame slides)))))
+
+
+(defmulti render-slide "Renders part of a slide" first)
 
 (defmethod render-slide :title [[_ text]]
-  [:h1 text])
+  (append-slide [:h1.title text ]))
 
 (defmethod render-slide :image [[_ img]]
-  [:img {:src img}])
+  (append-slide (set-image img)))
+
+(defmethod render-slide :anim [[_ img]]
+  (animation img))
 
 (defmethod render-slide :authors [[_ auths]]
-  [:ul  (map (fn [a] [:li a]) auths )])
+  (append-slide [:ul.authors  (map (fn [a] [:li.author a]) auths )]))
 
 (defmethod render-slide :code [[_ code]]
-  [:pre {:class "brush: clojure;"}
-   (escape-html (clojure.repl/source-fn (symbol code)))])
+  (append-slide [:pre.code {:class "brush: clojure;"}
+   (escape-html (clojure.repl/source-fn (symbol code)))]))
 
 (defmethod render-slide :code-snippet [[_ code]]
-  [:pre {:class "brush: clojure;"}
-   (escape-html code)])
+  (append-slide [:pre.code {:class "brush: clojure;"}
+   (escape-html code)]))
 
 (defmethod render-slide :i [[_ data]]
-  [:ul.i [:li data]])
+  (append-slide [:ul.i [:li data]]))
 
 (defmethod render-slide :ii [[_ data]]
-  [:ul.ii [:ul [:li data]]])
+  (append-slide [:ul.ii [:ul [:li data]]]))
 
 (defmethod render-slide :page [[_ data]]
-  data)
+  (append-slide [:div.pager data]))
 
-(defn render-slides [text pos]
-  (map render-slide (take (inc pos) text)))
+; Presentation
+
+(defn render-slides [text pos] 
+  "Renders a list of slides"
+  (letfn [(apply-render 
+          [r s]
+           ((render-slide s) r))]
+    (reduce apply-render [] (take (inc pos) text))))
 
 (defremote get-slide [name pos]
   (let [{curr-pos :pos {curr-name :name text :text f :run} :data} @current-slide]
@@ -45,7 +73,8 @@
       {:name curr-name
        :pos curr-pos
        :run f
-       :html (html (render-slides text curr-pos))}))) 
+       :html (html (seq (render-slides text curr-pos)))}))) 
+
 
 (defn new-slide [slide]
   (reset! current-slide {:pos 0 :data slide}))

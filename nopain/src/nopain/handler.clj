@@ -18,6 +18,7 @@
                                 (include-js "/shBrushClojure.js") 
                                 (include-css "/shCoreDefault.css")
                                 (include-css "/shClojureExtra.css")
+                                (include-css "/slides.css")
                                 [:script {:type "text/javascript"}
                                  "SyntaxHighlighter.all();"]
                                 [:div#main ]))
@@ -40,7 +41,7 @@
 (def app
   (handler/site #'app-routes))
 
-
 (defn run-server []
-  (send (agent nil) (fn [_] (run-jetty #'app {:port 3000}))))
+  	(send (agent nil) (fn  [_]
+                        (run-jetty #'app {:port 3000}))))
 

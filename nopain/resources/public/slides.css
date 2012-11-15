@@ -1,0 +1,11 @@
+img 
+{
+  float:right;
+  width:50%;
+  z-index:1000;
+}
+
+.syntaxhighlighter
+{
+  z-index:-1;
+}
