@@ -29,8 +29,16 @@
 (new-slide d/atomo-2)
 (next-slide)
 
+;In the game
 (new-slide d/game)
 (next-slide)
+;Plan B
+(doseq [p (range 0 100)]
+(g/register (str "Ladron " p)))
+(g/notify "A")
+(g/random-steal 5000)
+(insert-in-slides [:code "nopain.game/random-steal"])
+
 
 (new-slide d/game-result)
 (doseq 

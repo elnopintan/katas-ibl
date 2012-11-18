@@ -27,3 +27,20 @@ img {
 .syntaxhighlighter {
   z-index:-1;
 }
+
+#news {
+  float: right
+}
+
+#players {
+  width: 50%
+}
+
+.player {
+  width: 20%;
+  margin: 1em;
+  overflow:hidden;
+  float: left
+}
+
+

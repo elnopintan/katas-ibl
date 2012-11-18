@@ -31,9 +31,10 @@
            [:div
                [:div#register
                [:input#registerinput "" ]
-                [:button#registerbutton "registrate" ]]
-               [:div#players]
-               [:ul#news]]]]})
+                [:button#registerbutton "Regístrate" ]]
+            [:ul#news]
+            [:div#players]]
+               ]]})
 
 (def game-result
   {:name "game-result"

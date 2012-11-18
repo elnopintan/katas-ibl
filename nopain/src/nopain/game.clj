@@ -3,7 +3,7 @@
   )
 
 (def players (atom {}))
-(def news (agent []))
+(def news (agent [[0 ""]]))
 
 (defn new-player [name]
   (ref 100))
@@ -15,8 +15,12 @@
 
 
 (defn notify [text] 
-  (send news (fn[v]
-          (vec (take-last 10 v)))))
+  (send news 
+        (fn [v]
+          (let [[n _] (last v)]
+          	(vec (take-last 10 
+                          (conj v [(inc n) text])))))))
+
 
 (defn steal-coins [victim thief]
   (let [current-players @players]
@@ -48,6 +52,10 @@
   (steal-coins victim thief))
 
 (defremote read-news []
-   @news)
+   (map (fn [[n text]] (str n ":" text)) @news))
 
-(apply + (map #(deref (second %)) @players))
+(defn random-steal [times]
+  (letfn 
+    [(do-steal [] 
+               (apply steal-coins (take 2 (shuffle (keys @players)))))]
+    (doall (apply pcalls (repeat times do-steal)))))
