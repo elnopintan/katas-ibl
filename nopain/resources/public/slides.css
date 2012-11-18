@@ -15,17 +15,38 @@ document {
 
 body {
     font-family: Telefonica, Georgia, sans-serif;
-    margin: 2em 2em;
+    font-size: 15pt;
+    margin: 3em 2em 2em;
 }
 
 .image {
-  float:right;
-  width:50%;
-  z-index:1000;
+    float: right;
+    width: 50%;
+    z-index: 1000;
+    margin-left: 1ex;
+}
+
+#footer {
+    position: absolute;
+    bottom: 1ex;
+    right: 1em;
+    height: 30px;
+    padding: 20px 120px 15px 0;
+    background: transparent url("telefonica.png") no-repeat right center;
+}
+
+#header {
+    position: absolute;
+    color: #b3dee8;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1ex 1em;
+    background-color: #185968;
 }
 
 .syntaxhighlighter {
-  z-index:-1;
+    z-index:-1;
 }
 
 #news {

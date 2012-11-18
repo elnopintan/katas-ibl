@@ -12,16 +12,20 @@
 
 
 (defroutes app-routes
-  (GET "/" [] (assoc (response (html5
-                                (include-js "/main.js")
-                                (include-js "/shCore.js")
-                                (include-js "/shBrushClojure.js") 
-                                (include-css "/shCoreDefault.css")
-                                (include-css "/shClojureExtra.css")
-                                (include-css "/slides.css")
-                                [:script {:type "text/javascript"}
-                                 "SyntaxHighlighter.all();"]
-                                [:div#main ]))
+  (GET "/" [] (assoc
+                (response
+                  (html5
+                    (include-js "/main.js")
+                    (include-js "/shCore.js")
+                    (include-js "/shBrushClojure.js")
+                    (include-css "/shCoreDefault.css")
+                    (include-css "/shClojureExtra.css")
+                    (include-css "/slides.css")
+                    [:script {:type "text/javascript"}
+                     "SyntaxHighlighter.all();"]
+                    [:div#header "DEVCON 1"]
+                    [:div#main]
+                    [:div#footer "Painless concurrency and paralelism"]))
                :session {:saludo "hola"}))
 
   (GET "/current" [] (get-slide))
@@ -42,6 +46,5 @@
   (handler/site #'app-routes))
 
 (defn run-server []
-  	(send (agent nil) (fn  [_]
-                        (run-jetty #'app {:port 3000}))))
-
+  (send (agent nil) (fn  [_]
+                      (run-jetty #'app {:port 3000}))))
