@@ -1,11 +1,29 @@
-img 
-{
+@font-face {
+    font-family: "Telefonica";
+    src: url("telefonicatext-regular-webfont.ttf");
+}
+@font-face {
+    font-family: "Telefonica";
+    font-style: italic;
+    src: url("TelefonicaText-Italic.ttf");
+}
+
+document {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Telefonica, Georgia, sans-serif;
+    margin: 2em 2em;
+}
+
+img {
   float:right;
   width:50%;
   z-index:1000;
 }
 
-.syntaxhighlighter
-{
+.syntaxhighlighter {
   z-index:-1;
 }
