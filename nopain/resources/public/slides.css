@@ -27,7 +27,7 @@ body {
 }
 
 #footer {
-    position: absolute;
+    position: fixed;
     bottom: 1ex;
     right: 1em;
     height: 30px;
@@ -36,7 +36,7 @@ body {
 }
 
 #header {
-    position: absolute;
+    position: fixed;
     color: #b3dee8;
     top: 0;
     left: 0;

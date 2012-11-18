@@ -5,7 +5,7 @@
 (def players (atom {}))
 (def news (agent [[0 ""]]))
 
-(defn new-player [name]
+(defn new-player []
   (ref 100))
 
 (defn add-player[name]
@@ -16,10 +16,10 @@
 
 (defn notify [text] 
   (send news 
-        (fn [v]
-          (let [[n _] (last v)]
-          	(vec (take-last 10 
-                          (conj v [(inc n) text])))))))
+     (fn [v]
+        (let [[n _] (last v)]
+           (vec (take-last 10 
+                (conj v [(inc n) text])))))))
 
 
 (defn steal-coins [victim thief]

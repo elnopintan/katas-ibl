@@ -2,15 +2,13 @@
   (:use nopain.handler)
   (:use nopain.slides)
   (:require [nopain.slides.data :as d]
-            [nopain.game :as g]))
+            [nopain.game :as g]
+            [nopain.gui :as gui]))
 
 
 (run-server)
 
 (new-slide d/intro)
-(next-slide)
-
-(new-slide d/anim)
 (next-slide)
 
 (new-slide d/counter)
@@ -32,13 +30,16 @@
 ;In the game
 (new-slide d/game)
 (next-slide)
+
 ;Plan B
+(comment
 (doseq [p (range 0 100)]
 (g/register (str "Ladron " p)))
+
 (g/notify "A")
 (g/random-steal 5000)
 (insert-in-slides [:code "nopain.game/random-steal"])
-
+)
 
 (new-slide d/game-result)
 (doseq 
@@ -52,7 +53,8 @@
                     (map #(deref (second %)) @g/players))))]))
 
 
-(new-slide (d/referencia))
+(new-slide d/referencia)
+(new-slide (d/referencia-2))
 (next-slide)
 
 (new-slide d/agente)
@@ -64,7 +66,6 @@
   (insert-in-slides [:i (str "Gracias " player)]))
 
 (new-slide d/intro)
-
 
 
 

@@ -48,7 +48,7 @@
 
 (def identity-value
   {:name "identity-value"
-   :text [[:title "Identidad y Valor"]
+   :text [[:title "Imperativo vs Funcional"]
           [:i "Modelo Imperativo"]
           [:ii "Modificar variables"]
           [:image "/Variable1.jpg"]
@@ -61,7 +61,7 @@
 
 (def identity-value-2
   {:name "identity-value 2"
-   :text [[:title "Identidad y Valor"]
+   :text [[:title "Imperativo vs Funcional"]
           [:i "Modelo Funcional"]
           [:ii "Combinar funciones"]
           [:ii "Generar un valor a partir del siguiente"]
@@ -103,15 +103,14 @@
 (def atomo
   {:name "Atom"
    :text [[:title "Atom"]
-          [:image "/Atom.jpg"]
+          [:image "/Atom1.jpg"]
           [:code "nopain.slides.atom-example/num"]
-          [:anim "/Atom1.jpg"]
           [:code "nopain.slides.atom-example/change-count"]
           [:code "nopain.slides.atom-example/do-count"]
           [:anim "/Atom2.jpg"]
           [:code "nopain.slides.atom-example/read-count"]
-          [:anim "/Atom3.jpg"]
           ]})
+
 (def atomo-2
   {:name "Atom-2"
    :text [[:title "Atom"]
@@ -121,7 +120,7 @@
            ]})
 
 
-(defn referencia []
+(def referencia 
   {:name "Ref"
    :text [[:title "Ref"]
           [:image "/Ref1.jpg"]
@@ -129,10 +128,14 @@
           [:code-snippet "(dosync ...)"]
           [:code-snippet "(alter mi-ref + 1)"]
           [:anim "/Ref2.jpg"]
-          [:anim "/Ref3.jpg"]
+          [:anim "/Ref3.jpg"]]})
+
+(defn referencia-2 [] 
+  {:name "Ref-2"
+   :text [[:title "Ref"]
           [:i "Ejemplo en el juego"]
           [:code "nopain.game/steal-coins"]
-          [:code-snippet (str "players " (into {} (take 2 @nopain.game/players)) "") ]]})
+          [:code-snippet (str "players \n" (into {} (take 2 @nopain.game/players)) "") ]]})
 
 
 (str @nopain.game/players)
