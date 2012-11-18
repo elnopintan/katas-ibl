@@ -18,7 +18,7 @@ body {
     margin: 2em 2em;
 }
 
-img {
+.image {
   float:right;
   width:50%;
   z-index:1000;

@@ -6,8 +6,8 @@
   {:name "intro"
    :text [
     [:title "Concurrencia sin dolor"]
-    [:image "/clojure-icon.gif"]
-    [:authors ["Ignacio  Blasco López" "Sebastian Ortega Torres"]]]})
+    [:static-image "/clojure-icon.gif"]
+    [:authors ["Ignacio  Blasco López" "Sebastián Ortega Torres"]]]})
 
 (def anim
   {:name "anim"

@@ -35,6 +35,9 @@
 (defmethod render-slide :image [[_ img]]
   (append-slide (set-image img)))
 
+(defmethod render-slide :static-image [[_ img]]
+  (append-slide [:img {:src img}]))
+
 (defmethod render-slide :anim [[_ img]]
   (animation img))
 
