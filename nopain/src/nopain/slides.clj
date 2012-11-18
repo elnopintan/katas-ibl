@@ -23,7 +23,7 @@
             (if (= :img.image (first frame)) 
                      (set-image image)
                      frame))]
-  	(fn [slides] 
+    (fn [slides] 
       (into [] (map new-frame slides)))))
 
 

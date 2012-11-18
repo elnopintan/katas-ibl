@@ -3,14 +3,15 @@
   (:use nopain.slides)
   (:require [nopain.slides.data :as d]
             [nopain.game :as g]
-            [nopain.gui :as gui]))
-
+            [nopain.gui :as gui]
+            [nopain.slides.par :as p]))
 
 (run-server)
 
 (new-slide d/intro)
 (next-slide)
 
+;; Painless concurrency
 (new-slide d/counter)
 
 (new-slide d/resolve-counter)
@@ -42,18 +43,17 @@
 )
 
 (new-slide d/game-result)
-(doseq 
+(doseq
   [[player coins] @g/players]
   (insert-in-slides [:i (str player":  "@coins)]))
 
-(dosync
-	(insert-in-slides 
-    	[:i (list [:strong "Total: "] 
-                 (str (reduce + 
+(dosync (insert-in-slides
+          [:i (list [:strong "Total: "]
+                 (str (reduce +
                     (map #(deref (second %)) @g/players))))]))
 
-
 (new-slide d/referencia)
+(next-slide)
 (new-slide (d/referencia-2))
 (next-slide)
 
@@ -61,13 +61,14 @@
 (next-slide)
 
 (new-slide d/agradecimiento)
-(doseq 
+(doseq
   [player (keys @g/players)]
   (insert-in-slides [:i (str "Gracias " player)]))
 
 (new-slide d/intro)
 
+;; Painless parallelism
 
-
-
+(new-slide p/moore)
+(next-slide)
 
