@@ -2,19 +2,6 @@
   (:require nopain.slides.atom-example)
   (:require nopain.game))
 
-(def slides [intro 
-             anim 
-             counter 
-             resolve-counter
-             identity-value
-             identity-value-2 
-             atomo
-             atomo-2
-             game
-             game-result
-             referencia
-             agente
-             agradecimiento])
 
 (def intro
   {:name "intro"
@@ -22,14 +9,6 @@
     [:title "Concurrencia sin dolor"]
     [:static-image "/clojure-icon.gif"]
     [:authors ["Ignacio  Blasco López" "Sebastián Ortega Torres"]]]})
-
-(def anim
-  {:name "anim"
-   :text [
-          [:image "/Valor1.jpg"]
-          [:anim "/Valor2.jpg"]
-          [:anim "/Valor3.jpg"]
-          ]})
 
 
 (def counter
@@ -166,3 +145,17 @@
 (def agradecimiento
   {:name "Gracias"
    :text [[:title "Muchas Gracias"]]})
+
+(def slides [intro 
+             counter 
+             resolve-counter
+             identity-value
+             identity-value-2 
+             atomo
+             atomo-2
+             game
+             game-result
+             referencia
+             (referencia-2)
+             agente
+             agradecimiento])
