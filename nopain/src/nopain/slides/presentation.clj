@@ -71,4 +71,3 @@
 
 (new-slide p/moore)
 (next-slide)
-(gui/remote [p/moore])

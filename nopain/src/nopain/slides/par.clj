@@ -5,21 +5,12 @@
 
 (defmacro bootstrap []
   `(do
-     (require '[nopain.slides :only ~'[next-slide new-slide insert-in-slides]])
-     (require '[nopain.handler :as ~'h])
+     (use '[nopain.slides :only ~'[next-slide new-slide insert-in-slides]])
+     (use '[nopain.handler :as ~'h])
      (h/run-server)
     ))
 
-(def moore
-  {:name "The Moore's law"
-   :text [[:title "The Moore's law"]
-          [:image "/moore.png"]
-          [:i (str "The number of transistors on a chip doubles "
-                   "approximately every two years")]
-          [:i "Need more performance? Wait two years."]
-          [:i "Not anymore! We don't get faster processors, we get more of them"]
-          [:anim "/cell.jpg"]
-          ]})
+;; Word count example
 
 (def stop-words #{"de" "la" "que" "el" "en" "y" "a" "los" "del" "se" "las"
                   "por" "un" "para" "con" "no" "una" "su" "al" "lo" "como"
@@ -69,12 +60,11 @@
                   "tuviesen" "teniendo" "tenido" "tenida" "tenidos" "tenidas"
                   "tened"})
 
-(defn read-lines [filename]
-  (with-open [f (io/reader filename)]
+(defn resource-lines [filename]
+  (with-open [f (-> filename io/resource io/reader)]
     (vec
       (line-seq f))))
-(def quijote (read-lines "resources/private/quijote.txt"))
-(def shakespeare (read-lines "resources/private/shakespeare.txt"))
+(def quijote (resource-lines "quijote.txt"))
 
 (defn to-lower [s]
   (.toLowerCase s))
@@ -82,59 +72,40 @@
 (def merge-sum (partial merge-with +))
 
 (defn wordcount-stream [lines]
-  (letfn [(parse [line]
-            (map to-lower (re-seq #"\w+" line)))]
-    (->> lines
-      (mapcat parse)
-      (filter (complement stop-words))
-      (map (fn [word] {word 1}))
-      (reduce merge-sum))))
+  (->> lines
+    (mapcat (partial re-seq #"\w+"))
+    (map to-lower)
+    (filter (complement stop-words))
+    (map (fn [word] {word 1}))
+    (reduce merge-sum)))
 
 (defn wordcount-stream-2 [lines]
-  (letfn [(parse [line]
-            (map to-lower (re-seq #"\w+" line)))
-          (combine [counts]
-            (reduce merge-sum counts))]
-    (->> lines
-      (pmap (fn [line]
-              (for [word (parse line)
-                    :when (not (stop-words word))]
-                {word 1})))
-      flatten
-      combine)))
-
-(defn wordcount-stream-3 [lines]
-  (letfn [(parse [line]
-            (map to-lower (re-seq #"\w+" line)))]
-    (->> lines
-      (partition 10000)
-      (pmap (fn [lines]
-              (reduce merge-sum
-                (for [line lines
-                      word (parse line)
-                      :when (not (stop-words word))]
-                  {word 1}))))
-      (reduce merge-sum))))
+  (->> lines
+    (partition 512)
+    (pmap wordcount-stream)
+    (reduce merge-sum)))
 
 (defn wordcount-reduce [lines]
-  (letfn [(parse [line]
-            (r/map to-lower (re-seq #"\w+" line)))]
-    (->> lines
-      (r/mapcat parse)
-      (r/filter (complement stop-words))
-      (r/map (fn [word] {word 1}))
-      (r/fold merge-sum))))
+  (->> lines
+    (r/mapcat (partial re-seq #"\w+"))
+    (r/map to-lower)
+    (r/filter (complement stop-words))
+    (r/map (fn [word] {word 1}))
+    (r/fold merge-sum)))
 
 (defn wordcount-loop [lines]
   (let [accum (HashMap.)]
     (doseq [line     lines
             raw-word (re-seq #"\w+" line)
-            :let     [word (to-lower raw-word)]]
+            :let     [word (to-lower raw-word)]
+            :when    (not (stop-words word))]
         (let [count (.get accum word)]
           (.put accum
                 word
                 (if count (inc count) 1))))
     accum))
+
+;; Primes example
 
 (defn divides? [divisor num]
   (zero? (rem num divisor)))
@@ -147,8 +118,41 @@
   (count
     (filter prime? (range from (inc to)))))
 (defn primes-2 [from to]
-  (r/fold 1024 + +
+  (r/fold +
           (r/map (fn [_] 1)
                  (r/filter prime? (range from (inc to))))))
+
+;; Time measuring macros
+
+(defmacro measure-time [expr]
+  `(let [start# (System/nanoTime)
+         ret#   ~expr]
+     (/ (double (- (System/nanoTime) start#)) 1000000.0)))
+
+(defmacro avg-time [expr]
+  `(/
+     (->> [(measure-time ~expr)
+           (measure-time ~expr)
+           (measure-time ~expr)
+           (measure-time ~expr)
+           (measure-time ~expr)]
+       sort
+       (drop 1)
+       (take 3)
+       (reduce +))
+     3))
+
+;; Slides
+
+(def moore
+  {:name "The Moore's law"
+   :text [[:title "The Moore's law"]
+          [:image "/moore.png"]
+          [:i (str "The number of transistors on a chip doubles "
+                   "approximately every two years")]
+          [:i "Need more performance? Wait two years."]
+          [:i "Not anymore! We don't get faster processors, we get more of them"]
+          [:anim "/cell.jpg"]
+          ]})
 
 (def slides [moore])
