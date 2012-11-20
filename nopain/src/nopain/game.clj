@@ -60,4 +60,4 @@
   (letfn 
     [(do-steal [] 
                (apply steal-coins (take 2 (shuffle (keys @players)))))]
-    (doall (apply pcalls (repeat times do-steal)))))
+    (dorun (apply pcalls (repeat times do-steal)))))
