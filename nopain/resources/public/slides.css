@@ -21,7 +21,7 @@ body {
 
 .image {
     float: right;
-    width: 50%;
+    width: 45%;
     z-index: 1000;
     margin-left: 1ex;
 }

@@ -71,3 +71,9 @@
 
 (new-slide p/moore)
 (next-slide)
+
+(new-slide p/streams)
+(next-slide)
+
+(new-slide p/reducers)
+(next-slide)
