@@ -12,54 +12,6 @@
 
 ;; Word count example
 
-(def stop-words #{"de" "la" "que" "el" "en" "y" "a" "los" "del" "se" "las"
-                  "por" "un" "para" "con" "no" "una" "su" "al" "lo" "como"
-                  "más" "pero" "sus" "le" "ya" "o" "este" "sí" "porque" "esta"
-                  "entre" "cuando" "muy" "sin" "sobre" "también" "me" "hasta"
-                  "hay" "donde" "quien" "desde" "todo" "nos" "durante" "todos"
-                  "uno" "les" "ni" "contra" "otros" "ese" "eso" "ante" "ellos"
-                  "e" "esto" "mí" "antes" "algunos" "qué" "unos" "yo" "otro"
-                  "otras" "otra" "él" "tanto" "esa" "estos" "mucho" "quienes"
-                  "nada" "muchos" "cual" "poco" "ella" "estar" "estas"
-                  "algunas" "algo" "nosotros" "mi" "mis" "tú" "te" "ti" "tu"
-                  "tus" "ellas" "nosotras" "vosotros" "vosotras" "os" "mío"
-                  "mía" "míos" "mías" "tuyo" "tuya" "tuyos" "tuyas" "suyo"
-                  "suya" "suyos" "suyas" "nuestro" "nuestra" "nuestros"
-                  "nuestras" "vuestro" "vuestra" "vuestros" "vuestras" "esos"
-                  "esas" "estoy" "estás" "está" "estamos" "estáis" "están"
-                  "esté" "estés" "estemos" "estéis" "estén" "estaré" "estarás"
-                  "estará" "estaremos" "estaréis" "estarán" "estaría"
-                  "estarías" "estaríamos" "estaríais" "estarían" "estaba"
-                  "estabas" "estábamos" "estabais" "estaban" "estuve"
-                  "estuviste" "estuvo" "estuvimos" "estuvisteis" "estuvieron"
-                  "estuviera" "estuvieras" "estuviéramos" "estuvierais"
-                  "estuvieran" "estuviese" "estuvieses" "estuviésemos"
-                  "estuvieseis" "estuviesen" "estando" "estado" "estada"
-                  "estados" "estadas" "estad" "he" "has" "ha" "hemos" "habéis"
-                  "han" "haya" "hayas" "hayamos" "hayáis" "hayan" "habré"
-                  "habrás" "habrá" "habremos" "habréis" "habrán" "habría"
-                  "habrías" "habríamos" "habríais" "habrían" "había" "habías"
-                  "habíamos" "habíais" "habían" "hube" "hubiste" "hubo"
-                  "hubimos" "hubisteis" "hubieron" "hubiera" "hubieras"
-                  "hubiéramos" "hubierais" "hubieran" "hubiese" "hubieses"
-                  "hubiésemos" "hubieseis" "hubiesen" "habiendo" "habido"
-                  "habida" "habidos" "habidas" "soy" "eres" "es" "somos" "sois"
-                  "son" "sea" "seas" "seamos" "seáis" "sean" "seré" "serás"
-                  "será" "seremos" "seréis" "serán" "sería" "serías" "seríamos"
-                  "seríais" "serían" "era" "eras" "éramos" "erais" "eran" "fui"
-                  "fuiste" "fue" "fuimos" "fuisteis" "fueron" "fuera" "fueras"
-                  "fuéramos" "fuerais" "fueran" "fuese" "fueses" "fuésemos"
-                  "fueseis" "fuesen" "siendo" "sido" "tengo" "tienes" "tiene"
-                  "tenemos" "tenéis" "tienen" "tenga" "tengas" "tengamos"
-                  "tengáis" "tengan" "tendré" "tendrás" "tendrá" "tendremos"
-                  "tendréis" "tendrán" "tendría" "tendrías" "tendríamos"
-                  "tendríais" "tendrían" "tenía" "tenías" "teníamos" "teníais"
-                  "tenían" "tuve" "tuviste" "tuvo" "tuvimos" "tuvisteis"
-                  "tuvieron" "tuviera" "tuvieras" "tuviéramos" "tuvierais"
-                  "tuvieran" "tuviese" "tuvieses" "tuviésemos" "tuvieseis"
-                  "tuviesen" "teniendo" "tenido" "tenida" "tenidos" "tenidas"
-                  "tened"})
-
 (defn resource-lines [filename]
   (with-open [f (-> filename io/resource io/reader)]
     (vec
@@ -69,36 +21,42 @@
 (defn to-lower [s]
   (.toLowerCase s))
 
-(def merge-sum (partial merge-with +))
+(def ^:constant combine-sum (partial merge-with +))
+(defn inc-count [counts word]
+  (assoc counts word
+         (inc (get counts word 0))))
 
 (defn wordcount-stream [lines]
   (->> lines
     (mapcat (partial re-seq #"\w+"))
     (map to-lower)
-    (filter (complement stop-words))
-    (map (fn [word] {word 1}))
-    (reduce merge-sum)))
+    (reduce inc-count {})))
 
 (defn wordcount-stream-2 [lines]
   (->> lines
     (partition 512)
     (pmap wordcount-stream)
-    (reduce merge-sum)))
+    (reduce combine-sum)))
 
 (defn wordcount-reduce [lines]
   (->> lines
     (r/mapcat (partial re-seq #"\w+"))
     (r/map to-lower)
-    (r/filter (complement stop-words))
-    (r/map (fn [word] {word 1}))
-    (r/fold merge-sum)))
+    (r/fold combine-sum
+            (r/monoid inc-count {}))))
+
+(defn wordcount-reduce-2 [lines]
+  (->> lines
+    (r/mapcat (partial re-seq #"\w+"))
+    (r/map to-lower)
+    (r/fold 8192 combine-sum
+            (r/monoid inc-count {}))))
 
 (defn wordcount-loop [lines]
   (let [accum (HashMap.)]
     (doseq [line     lines
             raw-word (re-seq #"\w+" line)
-            :let     [word (to-lower raw-word)]
-            :when    (not (stop-words word))]
+            :let     [word (to-lower raw-word)]]
         (let [count (.get accum word)]
           (.put accum
                 word
@@ -153,6 +111,53 @@
           [:i "Need more performance? Wait two years."]
           [:i "Not anymore! We don't get faster processors, we get more of them"]
           [:anim "/cell.jpg"]
+          [:i "But we have spent decades optimizing for one core (or few)"]
+          [:anim "/x86.png"]
+          [:i "We need to try different abstractions"]
           ]})
 
-(def slides [moore])
+(def streams
+  {:name "Streams"
+   :text [[:title "Streams"]
+          [:i "Streams (or lazy sequences) abstracts from looping"]
+          [:image "/lazyseqs.png"]
+          [:i "Usual suspects: map, filter, reduce, partition..."]
+          [:code "nopain.slides.par/wordcount-stream"]
+          [:anim "/stream-of-words.png"]
+          [:i "But it is intrinsically sequential. Parallelization?"]
+          [:code "nopain.slides.par/wordcount-stream-2"]
+          [:ii "Pro: explicit data dependencies"]
+          [:ii "Con: parallelization at the finest level doesn't work"]
+          ]})
+
+(def reducers
+  {:name "Reducers"
+   :text [[:title "Reducers"]
+          [:i "The reduce-combine model unleashes parallelism"]
+          [:image "/reduce-combine.png"]
+          [:i "The stream abstraction can be minimally modified to be implemented with this model"]
+          [:ii "Before"]
+          [:code "nopain.slides.par/wordcount-stream"]
+          [:ii "After"]
+          [:code "nopain.slides.par/wordcount-reduce"]
+          ;[:ii "And after some tuning"]
+          ;[:code "nopain.slides.par/wordcount-reduce-2"]
+          ]})
+
+(defn compared-times []
+  (let [times (for [impl [wordcount-loop
+                          wordcount-stream
+                          wordcount-stream-2
+                          wordcount-reduce]]
+                (measure-time (impl quijote)))]
+    {:name "Compared times"
+     :text [[:title "Compared times "]
+            [:page [:div#chart]]
+            [:i (str "Looping " (nth times 0))]
+            [:i (str "Streams " (nth times 1))]
+            [:i (str "Parallelized streams "
+                     (nth times 2))]
+            [:i (str "Reducers " (nth times 3))]
+            ]}))
+
+(def slides [moore streams reducers])

@@ -16,10 +16,10 @@
 
 (defn notify [text] 
   (send news 
-     (fn [v]
-        (let [[n _] (last v)]
-           (vec (take-last 10 
-                (conj v [(inc n) text])))))))
+    (fn [v]
+      (let [[n _] (last v)]
+        (vec (take-last 10 
+               (conj v [(inc n) text])))))))
 
 
 (defn steal-coins [victim thief]
@@ -27,11 +27,13 @@
     (dosync
      (if (> @(current-players victim) 0)
        (do
-         (notify (str thief " stealed to " victim))
+         (notify (str thief 
+            " stealed to " victim))
          (alter (current-players victim) dec)
          (alter (current-players thief) inc))
        (do
-         (notify (str thief " couldn't steal to " victim))
+         (notify (str thief 
+            " couldn't steal to " victim))
          @(current-players thief))))))
 
 (defn coins? [p-name]
