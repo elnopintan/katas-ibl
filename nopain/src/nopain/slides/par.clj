@@ -34,8 +34,8 @@
 (def twocents
   {:name "My two cents"
    :text [[:title "My two cents"]
-          [:subtitle "Referential transparency"]
           [:image "/insanity.jpg"]
+          [:subtitle "Referential transparency"]
           [:i "Transparent functions only depend on their inputs"]
           [:anim "/pure_vs_impure.png"]
           [:ii "Not on when you call it"]
@@ -63,11 +63,10 @@
           [:ii "Reduce (reduce + [1 2 3 4]) => 10"]
           [:ii "Partition (partition 2 [1 2 3 4]) => ((1 2) (3 4))"]
           [:ii "And so on..."]
-          [:anim "/perlis.jpg"]
-          [:quote
-           "It is better to have 100 functions operate on one data
-           structure than 10 functions on 10 data structures"
-           "Alan Perlis 1922-1990"]
+          [:i [:p.quote "It is better to have 100 functions operate on one
+                        data structure than 10 functions on 10 data
+                        structures"
+               [:p.author "Alan Perlis 1922-1990"]]]
           ]})
 
 (def galaxy-example
@@ -106,9 +105,9 @@
           [:image "/reduce-combine.png"]
           [:i "The stream abstraction can be minimally modified to be implemented with this model"]
           [:ii "Before"]
-          [:code "wc/wordcount"]
+          [:code "nopain.wordcount/wordcount"]
           [:ii "After"]
-          [:code "wc/wordcount-reduce"]
+          [:code "nopain.wordcount/wordcount-reduce"]
           [:i "Similar speedup as bucketing"]
           ]})
 

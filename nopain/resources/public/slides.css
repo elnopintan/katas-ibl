@@ -75,3 +75,13 @@ span.bar {
 ul#times {
   font-size: 160%;
 }
+
+p.quote {
+    margin: 1ex 1em;
+    font-style: italic;
+}
+
+p.author {
+    text-align: right;
+    font-weight: bold;
+}
