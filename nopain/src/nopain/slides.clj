@@ -32,6 +32,9 @@
 (defmethod render-slide :title [[_ text]]
   (append-slide [:h1.title text ]))
 
+(defmethod render-slide :subtitle [[_ text]]
+  (append-slide [:h2.title text ]))
+
 (defmethod render-slide :image [[_ img]]
   (append-slide (set-image img)))
 
@@ -57,6 +60,10 @@
 
 (defmethod render-slide :ii [[_ data]]
   (append-slide [:ul.ii [:ul [:li data]]]))
+
+(defmethod render-slide :quote [[_ text author]]
+  (append-slide [:div.quote text])
+  (append-slide [:div.author author]))
 
 (defmethod render-slide :page [[_ data]]
   (append-slide [:div.pager data]))
