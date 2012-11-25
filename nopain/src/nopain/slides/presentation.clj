@@ -77,3 +77,5 @@
 
 (new-slide p/reducers)
 (next-slide)
+
+(gui/remote d/slides)

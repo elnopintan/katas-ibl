@@ -42,9 +42,10 @@
 (def identity-value
   {:name "identity-value"
    :text [[:title "Imperativo vs Funcional"]
+          [:image "/fake.jpg"]
           [:i "Modelo Imperativo"]
           [:ii "Modificar variables"]
-          [:image "/Variable1.jpg"]
+          [:anim "/Variable1.jpg"]
           [:anim "/Variable2.jpg"]
           [:anim "/Variable3.jpg"]
           [:anim "/Variable4.jpg"]
@@ -115,8 +116,9 @@
 
 (def referencia 
   {:name "Ref"
-   :text [[:title "Ref"]
+   :text [[:title "STM"]
           [:image "/Ref1.jpg"]
+          [:i "Software Transactional Memory"]
           [:code "nopain.game/new-player"]
           [:code-snippet "(dosync ...)"]
           [:code-snippet "(alter mi-ref + 1)"]
