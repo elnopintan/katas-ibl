@@ -1,7 +1,6 @@
 (ns nopain.slides.par
-  (:require [clojure.java.io :as io])
-  (:require [clojure.core.reducers :as r])
-  (:import [java.util HashMap]))
+  (:use [nopain.sim])
+  (:require [nopain.wordcount :as wc]))
 
 (defmacro bootstrap []
   `(do
@@ -10,97 +9,13 @@
      (h/run-server)
     ))
 
-;; Word count example
-
-(defn resource-lines [filename]
-  (with-open [f (-> filename io/resource io/reader)]
-    (vec
-      (line-seq f))))
-(def quijote (resource-lines "quijote.txt"))
-
-(defn to-lower [s]
-  (.toLowerCase s))
-
-(def ^:constant combine-sum (partial merge-with +))
-(defn inc-count [counts word]
-  (assoc counts word
-         (inc (get counts word 0))))
-
-(defn wordcount-stream [lines]
-  (->> lines
-    (mapcat (partial re-seq #"\w+"))
-    (map to-lower)
-    (reduce inc-count {})))
-
-(defn wordcount-stream-2 [lines]
-  (->> lines
-    (partition 512)
-    (pmap wordcount-stream)
-    (reduce combine-sum)))
-
-(defn wordcount-reduce [lines]
-  (->> lines
-    (r/mapcat (partial re-seq #"\w+"))
-    (r/map to-lower)
-    (r/fold combine-sum
-            (r/monoid inc-count {}))))
-
-(defn wordcount-reduce-2 [lines]
-  (->> lines
-    (r/mapcat (partial re-seq #"\w+"))
-    (r/map to-lower)
-    (r/fold 8192 combine-sum
-            (r/monoid inc-count {}))))
-
-(defn wordcount-loop [lines]
-  (let [accum (HashMap.)]
-    (doseq [line     lines
-            raw-word (re-seq #"\w+" line)
-            :let     [word (to-lower raw-word)]]
-        (let [count (.get accum word)]
-          (.put accum
-                word
-                (if count (inc count) 1))))
-    accum))
-
-;; Primes example
-
-(defn divides? [divisor num]
-  (zero? (rem num divisor)))
-(defn prime? [n]
-  (not-any?
-    #(divides? % n)
-    (range 2 n)))
-
-(defn primes-1 [from to]
-  (count
-    (filter prime? (range from (inc to)))))
-(defn primes-2 [from to]
-  (r/fold +
-          (r/map (fn [_] 1)
-                 (r/filter prime? (range from (inc to))))))
-
-;; Time measuring macros
-
-(defmacro measure-time [expr]
-  `(let [start# (System/nanoTime)
-         ret#   ~expr]
-     (/ (double (- (System/nanoTime) start#)) 1000000.0)))
-
-(defmacro avg-time [expr]
-  `(/
-     (->> [(measure-time ~expr)
-           (measure-time ~expr)
-           (measure-time ~expr)
-           (measure-time ~expr)
-           (measure-time ~expr)]
-       sort
-       (drop 1)
-       (take 3)
-       (reduce +))
-     3))
-
 ;; Slides
+
+(def intro
+  {:name "intro"
+   :text [[:title "Painless paralellism"]
+          [:i "Concurrency != Paralellism"]
+          [:static-image "/clojure-icon.gif"]]})
 
 (def moore
   {:name "The Moore's law"
@@ -113,51 +28,102 @@
           [:anim "/cell.jpg"]
           [:i "But we have spent decades optimizing for one core (or few)"]
           [:anim "/x86.png"]
-          [:i "We need to try different abstractions"]
+          [:i "What should we do?"]
+          ]})
+
+(def twocents
+  {:name "My two cents"
+   :text [[:title "My two cents"]
+          [:image "/insanity.jpg"]
+          [:subtitle "Referential transparency"]
+          [:i "Transparent functions only depend on their inputs"]
+          [:anim "/pure_vs_impure.png"]
+          [:ii "Not on when you call it"]
+          [:ii "Not on the order in which you call it"]
+          [:ii "Not on any internal state"]
+          [:i  "Explicit data dependencies"]
+          [:subtitle "Be declarative"]
+          [:anim "/declarative.jpg"]
+          [:i  "What and not how"]
+          [:i  "Logic over flow control"]
+          [:anim "/makefile.png"]
+          [:i  "Make room for reordering, paralellization and distribution"]
           ]})
 
 (def streams
   {:name "Streams"
    :text [[:title "Streams"]
           [:i "Streams (or lazy sequences) abstracts from looping"]
-          [:image "/lazyseqs.png"]
-          [:i "Usual suspects: map, filter, reduce, partition..."]
-          [:code "nopain.slides.par/wordcount-stream"]
-          [:anim "/stream-of-words.png"]
-          [:i "But it is intrinsically sequential. Parallelization?"]
-          [:code "nopain.slides.par/wordcount-stream-2"]
-          [:ii "Pro: explicit data dependencies"]
-          [:ii "Con: parallelization at the finest level doesn't work"]
+          [:image "/lazyseqs1.png"]
+          [:anim  "/lazyseqs2.png"]
+          [:anim  "/lazyseqs3.png"]
+          [:i "We can replace loops by stream operators (and HOF)"]
+          [:ii "Map (map inc [1 2 3 4]) => (2 3 4 5)"]
+          [:ii "Filter (filter even? [1 2 3 4]) => (2 4)"]
+          [:ii "Reduce (reduce + [1 2 3 4]) => 10"]
+          [:ii "Partition (partition 2 [1 2 3 4]) => ((1 2) (3 4))"]
+          [:ii "And so on..."]
+          [:i [:p.quote "It is better to have 100 functions operate on one
+                        data structure than 10 functions on 10 data
+                        structures"
+               [:p.author "Alan Perlis 1922-1990"]]]
           ]})
+
+(def galaxy-example
+  {:name "Galaxy simulation example"
+   :text [[:title "Galaxy simulation example"]
+          [:i "Let's simulate a galaxy of n stars naïvely (O(n^2))"]
+          [:image "/galaxy-sim-1.png"]
+          [:code  "nopain.sim/update-galaxy"]
+          [:anim  "/galaxy-sim-2.png"]
+          [:code  "nopain.sim/simulate"]
+          [:anim  "/galaxy-sim-3.png"]
+          [:code-snippet "(simulate update-galaxy 0.1 100 galaxy)"]
+          [:i  "How difficult is paralellize the map part?"]
+          [:code  "nopain.sim/update-galaxy-2"]
+          [:i  "~50% speed up just by changing map by pmap"]
+          ]})
+
+(def problem-solved
+  {:name "Problem solved?"
+   :text [[:title "Problem solved?"]
+          [:image "/problem-solved.jpg"]
+          [:i "Let's look at other example: word counting"]
+          [:code "nopain.wordcount/wordcount"]
+          [:anim "/stream-of-words.png"]
+          [:i "pmap all over the place"]
+          [:code "nopain.wordcount/wordcount-pmap"]
+          [:i "Speed up of <b>-450%!</b> Synchronization time dominates."]
+          [:code "nopain.wordcount/wordcount-buckets"]
+          [:i "Speed up of <b>41%</b>"]]})
 
 (def reducers
   {:name "Reducers"
    :text [[:title "Reducers"]
+          [:i "The stream abstraction is intrinsically serial"]
           [:i "The reduce-combine model unleashes parallelism"]
           [:image "/reduce-combine.png"]
           [:i "The stream abstraction can be minimally modified to be implemented with this model"]
           [:ii "Before"]
-          [:code "nopain.slides.par/wordcount-stream"]
+          [:code "nopain.wordcount/wordcount"]
           [:ii "After"]
-          [:code "nopain.slides.par/wordcount-reduce"]
-          ;[:ii "And after some tuning"]
-          ;[:code "nopain.slides.par/wordcount-reduce-2"]
+          [:code "nopain.wordcount/wordcount-reduce"]
+          [:i "Similar speedup as bucketing"]
           ]})
 
-(defn compared-times []
-  (let [times (for [impl [wordcount-loop
-                          wordcount-stream
-                          wordcount-stream-2
-                          wordcount-reduce]]
-                (measure-time (impl quijote)))]
-    {:name "Compared times"
-     :text [[:title "Compared times "]
-            [:page [:div#chart]]
-            [:i (str "Looping " (nth times 0))]
-            [:i (str "Streams " (nth times 1))]
-            [:i (str "Parallelized streams "
-                     (nth times 2))]
-            [:i (str "Reducers " (nth times 3))]
-            ]}))
+(def compared-times (wc/compared-times wc/benchmark-results))
 
-(def slides [moore streams reducers])
+(def qa-time
+  {:name "Thanks and Q&A"
+   :text [[:title "Thanks and Q&A"]
+          ]})
+
+(def slides [intro
+             moore
+             twocents
+             streams
+             galaxy-example
+             problem-solved
+             reducers
+             compared-times
+             qa-time])

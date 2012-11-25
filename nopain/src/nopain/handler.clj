@@ -25,7 +25,7 @@
                      "SyntaxHighlighter.all();"]
                     [:div#header "DEVCON 1"]
                     [:div#main]
-                    [:div#footer "Painless concurrency and paralelism"]))
+                    [:div#footer "Painless concurrency and paralellism"]))
                :session {:saludo "hola"}))
 
   (GET "/current" [] (get-slide))

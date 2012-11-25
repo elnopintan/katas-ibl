@@ -17,6 +17,7 @@ body {
     font-family: Telefonica, Georgia, sans-serif;
     font-size: 15pt;
     margin: 3em 2em 2em;
+    color: #444;
 }
 
 .image {
@@ -62,4 +63,25 @@ body {
   margin: 1em;
   overflow:hidden;
   float: left
+}
+
+span.bar {
+  margin: 0.5ex 0;
+  padding: 2.5px;
+  height: 1em;
+  background-color: #185968;
+}
+
+ul#times {
+  font-size: 160%;
+}
+
+p.quote {
+    margin: 1ex 1em;
+    font-style: italic;
+}
+
+p.author {
+    text-align: right;
+    font-weight: bold;
 }

@@ -10,20 +10,20 @@
   "This atom stores the current slide"
   (atom {:pos 0 :name "init" :text [[:title ""]]}))
 
-; Rendering slides 
+; Rendering slides
 
-(defn append-slide [data] 
+(defn append-slide [data]
   (fn [slides] (conj slides data)))
 
 (defn set-image [image]
   [:img.image {:src image}])
 
-(defn animation [image] 
-  (letfn [(new-frame [frame] 
-            (if (= :img.image (first frame)) 
+(defn animation [image]
+  (letfn [(new-frame [frame]
+            (if (= :img.image (first frame))
                      (set-image image)
                      frame))]
-    (fn [slides] 
+    (fn [slides]
       (into [] (map new-frame slides)))))
 
 
@@ -31,6 +31,9 @@
 
 (defmethod render-slide :title [[_ text]]
   (append-slide [:h1.title text ]))
+
+(defmethod render-slide :subtitle [[_ text]]
+  (append-slide [:h2.title text ]))
 
 (defmethod render-slide :image [[_ img]]
   (append-slide (set-image img)))
@@ -63,9 +66,9 @@
 
 ; Presentation
 
-(defn render-slides [text pos] 
+(defn render-slides [text pos]
   "Renders a list of slides"
-  (letfn [(apply-render 
+  (letfn [(apply-render
           [r s]
            ((render-slide s) r))]
     (reduce apply-render [] (take (inc pos) text))))
@@ -76,7 +79,7 @@
       {:name curr-name
        :pos curr-pos
        :run f
-       :html (html (seq (render-slides text curr-pos)))}))) 
+       :html (html (seq (render-slides text curr-pos)))})))
 
 
 (defn new-slide [slide]
