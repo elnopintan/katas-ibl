@@ -61,6 +61,10 @@
   (append-slide [:pre.code {:class "brush: clojure;"}
    (escape-html (clojure.repl/source-fn (symbol code)))]))
 
+(defmethod render-slide :java-snippet [[_ code]]
+  (append-slide [:pre.code {:class "brush: java;"}
+   (escape-html code)]))
+
 (defmethod render-slide :code-snippet [[_ code]]
   (append-slide [:pre.code {:class "brush: clojure;"}
    (escape-html code)]))
