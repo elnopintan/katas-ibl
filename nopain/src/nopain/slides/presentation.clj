@@ -11,6 +11,8 @@
 (new-slide d/intro)
 (next-slide)
 
+(new-slide d/q-es-clojure)
+(next-slide)
 ;; Painless concurrency
 (new-slide d/counter)
 
@@ -65,7 +67,6 @@
   [player (keys @g/players)]
   (insert-in-slides [:i (str "Gracias " player)]))
 
-(new-slide d/intro)
 
 ;; Painless parallelism
 
@@ -77,3 +78,5 @@
 
 (new-slide p/reducers)
 (next-slide)
+
+(new-slide d/intro)

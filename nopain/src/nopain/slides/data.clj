@@ -48,7 +48,8 @@
           [:anim "/Variable2.jpg"]
           [:anim "/Variable3.jpg"]
           [:anim "/Variable4.jpg"]
-          [:i "Identidad y valor mezcladas"]
+          [:i "Dependencia temporal"]
+          [:i "Empeora con concurrencia"]
           ]}
   )
 
@@ -62,9 +63,23 @@
           [:anim "/Valor2.jpg"]
           [:anim "/Valor3.jpg"]
           [:anim "/Valor4.jpg"]
-          [:i "No es suficiente"]
+          [:i "Transparencia referencial"]
+          [:i "Comparticion sin peligro"]
           ]}
   )
+
+(def q-es-clojure
+  {:name "Que es Clojure?"
+   :text[[:title "¿Que es clojure?"]
+         [:static-image "/clojure-icon.gif"]
+         [:i "Dialecto de Lisp"]
+         [:i "Funciona en:"]
+         [:ii "JVM"]
+         [:ii "Javascript"]
+         [:i "Enfasis en:"]
+         [:ii "programación funcional (inmutabilidad, funciones)"]
+         [:ii "concurrencia"]]})
+
 
 (def curso-relampago
   {:name "Aprenda clojure (1)"
