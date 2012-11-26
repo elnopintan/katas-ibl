@@ -18,6 +18,7 @@
                     (include-js "/main.js")
                     (include-js "/shCore.js")
                     (include-js "/shBrushClojure.js")
+                    (include-js "/shBrushJava.js")
                     (include-css "/shCoreDefault.css")
                     (include-css "/shClojureExtra.css")
                     (include-css "/slides.css")

@@ -49,21 +49,23 @@
           [:anim "/Variable2.jpg"]
           [:anim "/Variable3.jpg"]
           [:anim "/Variable4.jpg"]
-          [:i "Identidad y valor mezcladas"]
+          [:java-snippet "void changeCount() {num = (num+num)%1000000;}"]
+          [:java-snippet "c.changeCount();\nc.changeCount();\nc.changeCount();"]
           ]}
   )
 
 (def identity-value-2
   {:name "identity-value 2"
    :text [[:title "Imperativo vs Funcional"]
+          [:image "/Valor1.jpg"]
           [:i "Modelo Funcional"]
           [:ii "Combinar funciones"]
           [:ii "Generar un valor a partir del siguiente"]
-          [:image "/Valor1.jpg"]
           [:anim "/Valor2.jpg"]
           [:anim "/Valor3.jpg"]
           [:anim "/Valor4.jpg"]
-          [:i "No es suficiente"]
+          [:java-snippet "int changeCount() { return new Counter((num+num)%1000000);}"]
+          [:java-snippet "c.changeCount().\n  changeCount().\n  changeCount();"]
           ]}
   )
 
