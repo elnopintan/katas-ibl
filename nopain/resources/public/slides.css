@@ -46,6 +46,23 @@ body {
     background-color: #185968;
 }
 
+#progress-bar {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+    width: 3em;
+    background-color: #658c98;
+    height: 1ex;
+}
+
+#completed {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #b3dee8;
+}
+
 img.icon {
     position: relative;
     top: 1ex;
@@ -56,30 +73,30 @@ img.icon {
 }
 
 #news {
-  float: right
+    float: right
 }
 
 #players {
-  width: 50%
+    width: 50%
 }
 
 .player {
-  width: 20%;
-  margin: 1em;
-  overflow:hidden;
-  float: left
+    width: 20%;
+    margin: 1em;
+    overflow:hidden;
+    float: left
 }
 
 span.bar {
-  margin: 0.5ex 0;
-  padding: 2.5px;
-  height: 1em;
-  background-color: #185968;
-  line-height: 2em;
+    margin: 0.5ex 0;
+    padding: 2.5px;
+    height: 1em;
+    background-color: #185968;
+    line-height: 2em;
 }
 
 ul#times {
-  font-size: 140%;
+    font-size: 140%;
 }
 
 p.quote {
@@ -90,4 +107,16 @@ p.quote {
 p.author {
     text-align: right;
     font-weight: bold;
+}
+
+p.conclussion {
+    text-align: center;
+    font-size: 150%;
+}
+
+div#thanks {
+    position: fixed;
+    bottom: 4em;
+    right: 2em;
+    font-size: 2em;
 }

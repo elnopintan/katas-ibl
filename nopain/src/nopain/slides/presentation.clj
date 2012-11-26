@@ -92,12 +92,10 @@
 (new-slide p/reducers)
 (next-slide)
 
-
 (new-slide p/compared-times)
 (next-slide)
 
 (new-slide p/qa-time)
-(next-slide)
 
 (new-slide d/intro)
 

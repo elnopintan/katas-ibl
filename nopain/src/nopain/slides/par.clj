@@ -38,9 +38,9 @@
           [:subtitle "Referential transparency"]
           [:i "Transparent functions only depend on their inputs"]
           [:anim "/pure_vs_impure.png"]
+          [:ii "Not on any internal state"]
           [:ii "Not on when you call it"]
           [:ii "Not on the order in which you call it"]
-          [:ii "Not on any internal state"]
           [:i  "Explicit data dependencies"]
           [:subtitle "Be declarative"]
           [:anim "/declarative.jpg"]
@@ -107,9 +107,9 @@
   {:name "Reducers"
    :text [[:title "Reducers"]
           [:i "The stream abstraction is intrinsically serial"]
-          [:i "The reduce-combine model unleashes parallelism"]
           [:image "/reduce-combine.png"]
-          [:i "The stream abstraction can be minimally modified to be implemented with this model"]
+          [:i "The reduce-combine model unleashes parallelism"]
+          [:i "Can we modify streams to use this model?"]
           [:ii "Before"]
           [:code "nopain.wordcount/wordcount"]
           [:ii "After"]
@@ -121,7 +121,13 @@
 
 (def qa-time
   {:name "Thanks and Q&A"
-   :text [[:title "Thanks and Q&A"]
+   :text [[:page [:div
+                  [:h1.title "Conclusion"]
+                  [:p.conclussion
+                   "Leverage immutability, referential transparency
+                    and declarative models and stop suffering"]
+                  [:div#thanks "Thanks for your time"]
+                  ]]
           ]})
 
 (def slides [moore
