@@ -5,13 +5,13 @@
 (def players (atom {}))
 (def news (agent [[0 ""]]))
 
-(defn new-player []
-  (ref 100))
+(defn new-player [player-map player]
+  (assoc player-map player (ref 100)))
 
 (defn add-player[name]
   (swap! players 
-         #(if (not (% name)) (assoc % name (ref 100)) %)))	
-
+         #(if (not (% name))
+            (new-player % name))))
 
 
 (defn notify [text] 

@@ -42,14 +42,13 @@
 (def identity-value
   {:name "identity-value"
    :text [[:title "Imperativo vs Funcional"]
-          [:image "/fake.jpg"]
+          [:image "/Variable1.jpg"]
           [:i "Modelo Imperativo"]
           [:ii "Modificar variables"]
-          [:anim "/Variable1.jpg"]
           [:anim "/Variable2.jpg"]
           [:anim "/Variable3.jpg"]
           [:anim "/Variable4.jpg"]
-          [:java-snippet "void changeCount() {num = (num+num)%1000000;}"]
+          [:java-snippet "void changeCount() {\n    num = (num+num)%1000000;\n}"]
           [:java-snippet "c.changeCount();\nc.changeCount();\nc.changeCount();"]
           [:i "Dependencia temporal"]
           [:i "Empeora con concurrencia"]
@@ -67,12 +66,13 @@
           [:anim "/Valor2.jpg"]
           [:anim "/Valor3.jpg"]
           [:anim "/Valor4.jpg"]
-          [:java-snippet "int changeCount() { return new Counter((num+num)%1000000);}"]
+          [:java-snippet "Counter changeCount() {\n    return new Counter((num+num)%1000000);\n}"]
           [:java-snippet "c.changeCount().\n  changeCount().\n  changeCount();"]
           [:i "Transparencia referencial"]
           [:i "Comparticion sin peligro"]
           [:i "Genera mas basura"]
-
+          [:i "Necesita estructuras especificas"]
+          [:anim "/clojure-trees.png"]
           ]}
   )
 
@@ -131,7 +131,9 @@
   {:name "Atom-2"
    :text [[:title "Atom"]
           [:image "/AtomC1.jpg"]
+          [:i "Compare and Set..."]
           [:anim "/AtomC2.jpg"]
+          [:i "...and Retry"]
           [:anim "/AtomC3.jpg"]
            ]})
 
@@ -142,17 +144,27 @@
           [:image "/Ref1.jpg"]
           [:i "Software Transactional Memory"]
           [:code "nopain.game/new-player"]
+          [:i "Transacción"]
           [:code-snippet "(dosync ...)"]
           [:code-snippet "(alter mi-ref + 1)"]
           [:anim "/Ref2.jpg"]
-          [:anim "/Ref3.jpg"]]})
+          [:i "Multiversion Concurrency Control (MVCC)"]
+          [:anim "/Ref3.jpg"]
+          [:i "... and Retry"]
+          [:i "Prohibidos efectos secundarios!!"]]})
 
-(defn referencia-2 [] 
+(defn ejemplo-juego [] 
   {:name "Ref-2"
-   :text [[:title "Ref"]
+   :text [[:title "Implementacion del juego"]
           [:i "Ejemplo en el juego"]
+		  [:code "nopain.game/players"]
+		  [:code "nopain.game/news"]
+          [:code "nopain.game/new-player"]
+          [:code "nopain.game/add-player"]
+          [:code-snippet (str "players \n" (into {} (take 2 @nopain.game/players)) "") ]
           [:code "nopain.game/steal-coins"]
-          [:code-snippet (str "players \n" (into {} (take 2 @nopain.game/players)) "") ]]})
+          [:code "nopain.game/notify"]
+          [:code "nopain.game/read-news"]]})
 
 
 (str @nopain.game/players)
@@ -160,10 +172,15 @@
   {:name "Agente"
    :text [[:title "Agent"]
           [:image "/Agent1.jpg"]
-          [:code "nopain.game/news"]
-          [:code "nopain.game/notify"]
+          [:i "Comportamiento asíncrono"]
+          [:i "Ejecucion secuencial"]
+          [:code-snippet "(def james (agent \"bond\"))"]
+          [:code-snippet "(send james str \" 007\")"]
           [:anim "/Agent2.jpg"]
-          [:code-snippet "(send-off my-agent #(write file %) \"Hola mundo\")"]
+          [:i "Ejecucion de entrada/salida"]
+          [:code-snippet "(send-off james #(write file %) \"Bang Bang\")"]
+          [:i "Colabora con atoms y refs"]
+          [:ii "Solo envia tras el commit"]
           ]})
 
 (def agradecimiento

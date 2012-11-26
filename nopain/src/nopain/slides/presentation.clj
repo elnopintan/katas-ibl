@@ -11,12 +11,8 @@
 (new-slide d/intro)
 (next-slide)
 
-(new-slide d/q-es-clojure)
-(next-slide)
 ;; Painless concurrency
 (new-slide d/counter)
-
-(new-slide d/resolve-counter)
 
 (new-slide d/identity-value)
 (next-slide)
@@ -56,10 +52,11 @@
 
 (new-slide d/referencia)
 (next-slide)
-(new-slide (d/referencia-2))
-(next-slide)
 
 (new-slide d/agente)
+(next-slide)
+
+(new-slide (d/ejemplo-juego))
 (next-slide)
 
 (new-slide d/agradecimiento)
@@ -90,7 +87,6 @@
 
 (new-slide p/reducers)
 (next-slide)
-
 
 (new-slide p/compared-times)
 (next-slide)
