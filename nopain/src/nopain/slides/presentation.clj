@@ -1,7 +1,7 @@
 (ns nopain.slides.presentation
   (:use nopain.handler)
   (:use nopain.slides)
-  (:require [nopain.slides.data :as d]
+  (:require [nopain.slides.data-en :as d]
             [nopain.game :as g]
             [nopain.gui :as gui]
             [nopain.slides.par :as p]))
@@ -62,8 +62,9 @@
 (new-slide d/agradecimiento)
 (doseq
   [player (keys @g/players)]
-  (insert-in-slides [:i (str "Gracias " player)]))
+  (insert-in-slides [:i (str d/thank player)]))
 
+(gui/remote d/slides) 
 
 ;; Painless parallelism
 

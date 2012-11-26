@@ -1,4 +1,4 @@
-(ns nopain.slides.data
+(ns nopain.slides.data-en
   (:require nopain.slides.atom-example)
   (:require nopain.game))
 
@@ -6,7 +6,7 @@
 (def intro
   {:name "intro"
    :text [
-    [:title "Concurrencia sin dolor"]
+    [:title "Painless concurrency"]
     [:static-image "/clojure-icon.gif"]
     [:authors ["Ignacio  Blasco López" "Sebastián Ortega Torres"]]]})
 
@@ -19,59 +19,57 @@
 (def game
   {:name "game"
    :run "game"
-   :text [[:title "Juego"]
+   :text [[:title "Game"]
           [:page 
            [:div
                [:div#register
                [:input#registerinput "" ]
-                [:button#registerbutton "Regístrate" ]]
+                [:button#registerbutton "Register" ]]
             [:ul#news]
             [:div#players]]
                ]]})
 
 (def game-result
   {:name "game-result"
-   :text [[:title "Resultado del juego"]]})
+   :text [[:title "Game result"]]})
 
 (def resolve-counter
   {:name "resolve counter"
-   :text [[:title "Resolviendo el problema del contador"]]
+   :text [[:title "Solving counter problem"]]
    })
 
 
 (def identity-value
   {:name "identity-value"
-   :text [[:title "Imperativo vs Funcional"]
-          [:image "/Variable1.jpg"]
-          [:i "Modelo Imperativo"]
-          [:ii "Modificar variables"]
-          [:anim "/Variable2.jpg"]
-          [:anim "/Variable3.jpg"]
-          [:anim "/Variable4.jpg"]
+   :text [[:title "Imperative vs Functional"]
+          [:image "/Variable1_en.jpg"]
+          [:i "Imperative model"]
+          [:ii "Variable change"]
+          [:anim "/Variable2_en.jpg"]
+          [:anim "/Variable3_en.jpg"]
+          [:anim "/Variable4_en.jpg"]
           [:java-snippet "void changeCount() {\n    num = (num+num)%1000000;\n}"]
           [:java-snippet "c.changeCount();\nc.changeCount();\nc.changeCount();"]
-          [:i "Dependencia temporal"]
-          [:i "Empeora con concurrencia"]
+          [:i "Time dependency"]
+          [:i "Gets worse with concurrency"]
 
           ]}
   )
 
 (def identity-value-2
   {:name "identity-value 2"
-   :text [[:title "Imperativo vs Funcional"]
-          [:image "/Valor1.jpg"]
-          [:i "Modelo Funcional"]
-          [:ii "Combinar funciones"]
-          [:ii "Generar un valor a partir del siguiente"]
-          [:anim "/Valor2.jpg"]
-          [:anim "/Valor3.jpg"]
-          [:anim "/Valor4.jpg"]
+   :text [[:title "Imperative vs Functional"]
+          [:image "/Valor1_en.jpg"]
+          [:ii "Function composition"]
+          [:ii "Each value used to produce the next"]
+          [:anim "/Valor2_en.jpg"]
+          [:anim "/Valor3_en.jpg"]
           [:java-snippet "Counter changeCount() {\n    return new Counter((num+num)%1000000);\n}"]
           [:java-snippet "c.changeCount().\n  changeCount().\n  changeCount();"]
-          [:i "Transparencia referencial"]
-          [:i "Comparticion sin peligro"]
-          [:i "Genera mas basura"]
-          [:i "Necesita estructuras especificas"]
+          [:i "Referential transparency"]
+          [:i "Can be shared"]
+          [:i "More garbage"]
+          [:i "Need of special data structures"]
           [:anim "/clojure-trees.png"]
           ]}
   )
@@ -119,44 +117,44 @@
 (def atomo
   {:name "Atom"
    :text [[:title "Atom"]
-          [:image "/Atom1.jpg"]
+          [:image "/Atom1_en.jpg"]
           [:code "nopain.slides.atom-example/num"]
           [:code "nopain.slides.atom-example/change-count"]
           [:code "nopain.slides.atom-example/do-count"]
-          [:anim "/Atom2.jpg"]
+          [:anim "/Atom2_en.jpg"]
           [:code "nopain.slides.atom-example/read-count"]
           ]})
 
 (def atomo-2
   {:name "Atom-2"
    :text [[:title "Atom"]
-          [:image "/AtomC1.jpg"]
+          [:image "/AtomC1_en.jpg"]
           [:i "Compare and Set..."]
-          [:anim "/AtomC2.jpg"]
+          [:anim "/AtomC2_en.jpg"]
           [:i "...and Retry"]
-          [:anim "/AtomC3.jpg"]
+          [:anim "/AtomC3_en.jpg"]
            ]})
 
 
 (def referencia 
   {:name "Ref"
    :text [[:title "STM"]
-          [:image "/Ref1.jpg"]
+          [:image "/Ref1_en.jpg"]
           [:i "Software Transactional Memory"]
           [:code-snippet "(def mi-ref (ref 1))"]
-          [:i "Transacción"]
+          [:i "Transactionn"]
           [:code-snippet "(dosync ...)"]
           [:code-snippet "(alter mi-ref inc)"]
-          [:anim "/Ref2.jpg"]
+          [:anim "/Ref2_en.jpg"]
           [:i "Multiversion Concurrency Control (MVCC)"]
-          [:anim "/Ref3.jpg"]
+          [:anim "/Ref3_en.jpg"]
           [:i "... and Retry"]
-          [:i "Prohibidos efectos secundarios!!"]]})
+          [:i "Beware. No secondary effects!!"]]})
 
 (defn ejemplo-juego [] 
   {:name "Ref-2"
    :text [[:title "Implementacion del juego"]
-          [:i "Ejemplo en el juego"]
+          [:i "Game implementation"]
 		  [:code "nopain.game/players"]
 		  [:code "nopain.game/news"]
           [:code "nopain.game/new-player"]
@@ -171,23 +169,23 @@
 (def agente
   {:name "Agente"
    :text [[:title "Agent"]
-          [:image "/Agent1.jpg"]
-          [:i "Comportamiento asíncrono"]
-          [:i "Ejecucion secuencial"]
+          [:image "/Agent1_en.jpg"]
+          [:i "Asynchronous behaviour"]
+          [:i "Secuential execution"]
           [:code-snippet "(def james (agent \"bond\"))"]
           [:code-snippet "(send james str \" 007\")"]
-          [:anim "/Agent2.jpg"]
-          [:i "Ejecucion de entrada/salida"]
+          [:anim "/Agent2_en.jpg"]
+          [:i "For I/O"]
           [:code-snippet "(send-off james #(write file %) \"Bang Bang\")"]
-          [:i "Colabora con atoms y refs"]
-          [:ii "Solo envia tras el commit"]
+          [:i "Collaboration with atoms and refs"]
+          [:ii "Waits to commit to be sent"]
           ]})
 
 (def agradecimiento
   {:name "Gracias"
-   :text [[:title "Muchas Gracias"]]})
+   :text [[:title "Thank you very much"]]})
 
-(def thank "Gracias ")
+(def thank "Thank you ")
 
 (def slides [intro 
              counter 
