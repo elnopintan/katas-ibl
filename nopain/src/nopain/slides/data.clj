@@ -42,29 +42,37 @@
 (def identity-value
   {:name "identity-value"
    :text [[:title "Imperativo vs Funcional"]
+          [:image "/fake.jpg"]
           [:i "Modelo Imperativo"]
           [:ii "Modificar variables"]
-          [:image "/Variable1.jpg"]
+          [:anim "/Variable1.jpg"]
           [:anim "/Variable2.jpg"]
           [:anim "/Variable3.jpg"]
           [:anim "/Variable4.jpg"]
+          [:java-snippet "void changeCount() {num = (num+num)%1000000;}"]
+          [:java-snippet "c.changeCount();\nc.changeCount();\nc.changeCount();"]
           [:i "Dependencia temporal"]
           [:i "Empeora con concurrencia"]
+
           ]}
   )
 
 (def identity-value-2
   {:name "identity-value 2"
    :text [[:title "Imperativo vs Funcional"]
+          [:image "/Valor1.jpg"]
           [:i "Modelo Funcional"]
           [:ii "Combinar funciones"]
           [:ii "Generar un valor a partir del siguiente"]
-          [:image "/Valor1.jpg"]
           [:anim "/Valor2.jpg"]
           [:anim "/Valor3.jpg"]
           [:anim "/Valor4.jpg"]
+          [:java-snippet "int changeCount() { return new Counter((num+num)%1000000);}"]
+          [:java-snippet "c.changeCount().\n  changeCount().\n  changeCount();"]
           [:i "Transparencia referencial"]
           [:i "Comparticion sin peligro"]
+          [:i "Genera mas basura"]
+
           ]}
   )
 
@@ -130,8 +138,9 @@
 
 (def referencia 
   {:name "Ref"
-   :text [[:title "Ref"]
+   :text [[:title "STM"]
           [:image "/Ref1.jpg"]
+          [:i "Software Transactional Memory"]
           [:code "nopain.game/new-player"]
           [:code-snippet "(dosync ...)"]
           [:code-snippet "(alter mi-ref + 1)"]

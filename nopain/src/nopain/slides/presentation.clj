@@ -70,13 +70,33 @@
 
 ;; Painless parallelism
 
+(new-slide p/intro)
+(next-slide)
+
 (new-slide p/moore)
+(next-slide)
+
+(new-slide p/twocents)
 (next-slide)
 
 (new-slide p/streams)
 (next-slide)
 
+(new-slide p/galaxy-example)
+(next-slide)
+
+(new-slide p/problem-solved)
+(next-slide)
+
 (new-slide p/reducers)
 (next-slide)
 
+
+(new-slide p/compared-times)
+(next-slide)
+
+(new-slide p/qa-time)
+(next-slide)
+
 (new-slide d/intro)
+

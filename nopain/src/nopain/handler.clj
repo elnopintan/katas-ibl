@@ -18,6 +18,7 @@
                     (include-js "/main.js")
                     (include-js "/shCore.js")
                     (include-js "/shBrushClojure.js")
+                    (include-js "/shBrushJava.js")
                     (include-css "/shCoreDefault.css")
                     (include-css "/shClojureExtra.css")
                     (include-css "/slides.css")
@@ -25,7 +26,7 @@
                      "SyntaxHighlighter.all();"]
                     [:div#header "DEVCON 1"]
                     [:div#main]
-                    [:div#footer "Painless concurrency and paralelism"]))
+                    [:div#footer "Painless concurrency and paralellism"]))
                :session {:saludo "hola"}))
 
   (GET "/current" [] (get-slide))
