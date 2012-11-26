@@ -95,3 +95,7 @@
 
 (new-slide p/qa-time)
 (next-slide)
+
+(comment
+  (gui/remote p/slides)
+)

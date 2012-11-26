@@ -44,8 +44,18 @@
 (defmethod render-slide :anim [[_ img]]
   (animation img))
 
-(defmethod render-slide :authors [[_ auths]]
-  (append-slide [:ul.authors  (map (fn [a] [:li.author a]) auths )]))
+(defn hublink [site handle]
+  [:a {:href (str ({:pdihub "https://pdihub.hi.inet/"
+                    :github "https://github.com/"} site)
+                  handle)}
+      [:img.icon {:src (format "/%s.png" (name site))}]])
+
+(defmethod render-slide :authors [[_ authors]]
+  (append-slide [:ul.authors
+                 (for [{:keys [name pdihub github]} authors]
+                   [:li.author name "&nbsp;"
+                    (hublink :pdihub pdihub)
+                    (hublink :github github)])]))
 
 (defmethod render-slide :code [[_ code]]
   (append-slide [:pre.code {:class "brush: clojure;"}

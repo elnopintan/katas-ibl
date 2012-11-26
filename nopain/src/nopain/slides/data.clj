@@ -8,8 +8,12 @@
    :text [
     [:title "Concurrencia sin dolor"]
     [:static-image "/clojure-icon.gif"]
-    [:authors ["Ignacio  Blasco López" "Sebastián Ortega Torres"]]]})
-
+    [:authors [{:name "Ignacio Blasco López"
+                :pdihub "ibl"
+                :github "elnopintan"}
+               {:name "Sebastián Ortega Torres"
+                :pdihub "sortega"
+                :github "sortega"}]]]})
 
 (def counter
   {:name "counter"
@@ -20,7 +24,7 @@
   {:name "game"
    :run "game"
    :text [[:title "Juego"]
-          [:page 
+          [:page
            [:div
                [:div#register
                [:input#registerinput "" ]
@@ -113,7 +117,7 @@
            ]})
 
 
-(def referencia 
+(def referencia
   {:name "Ref"
    :text [[:title "Ref"]
           [:image "/Ref1.jpg"]
@@ -123,7 +127,7 @@
           [:anim "/Ref2.jpg"]
           [:anim "/Ref3.jpg"]]})
 
-(defn referencia-2 [] 
+(defn referencia-2 []
   {:name "Ref-2"
    :text [[:title "Ref"]
           [:i "Ejemplo en el juego"]
@@ -146,11 +150,10 @@
   {:name "Gracias"
    :text [[:title "Muchas Gracias"]]})
 
-(def slides [intro 
-             counter 
+(def slides [counter
              resolve-counter
              identity-value
-             identity-value-2 
+             identity-value-2
              atomo
              atomo-2
              game

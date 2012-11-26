@@ -46,6 +46,11 @@ body {
     background-color: #185968;
 }
 
+img.icon {
+    position: relative;
+    top: 1ex;
+}
+
 .syntaxhighlighter {
     z-index:-1;
 }
@@ -70,10 +75,11 @@ span.bar {
   padding: 2.5px;
   height: 1em;
   background-color: #185968;
+  line-height: 2em;
 }
 
 ul#times {
-  font-size: 160%;
+  font-size: 140%;
 }
 
 p.quote {
