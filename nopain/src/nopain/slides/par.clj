@@ -13,8 +13,8 @@
 
 (def intro
   {:name "intro"
-   :text [[:title "Painless paralellism"]
-          [:i "Concurrency != Paralellism"]
+   :text [[:title "Painless parallelism"]
+          [:i "Concurrency != Parallelism"]
           [:static-image "/clojure-icon.gif"]]})
 
 (def moore
@@ -38,34 +38,40 @@
           [:subtitle "Referential transparency"]
           [:i "Transparent functions only depend on their inputs"]
           [:anim "/pure_vs_impure.png"]
+          [:ii "Not on any internal state"]
           [:ii "Not on when you call it"]
           [:ii "Not on the order in which you call it"]
-          [:ii "Not on any internal state"]
           [:i  "Explicit data dependencies"]
           [:subtitle "Be declarative"]
           [:anim "/declarative.jpg"]
           [:i  "What and not how"]
           [:i  "Logic over flow control"]
           [:anim "/makefile.png"]
-          [:i  "Make room for reordering, paralellization and distribution"]
+          [:i  "Make room for reordering, parallelization and distribution"]
           ]})
 
 (def streams
   {:name "Streams"
    :text [[:title "Streams"]
-          [:i "Streams (or lazy sequences) abstracts from looping"]
           [:image "/lazyseqs1.png"]
+          [:i "Streams (or lazy sequences) abstracts from looping"]
           [:anim  "/lazyseqs2.png"]
           [:anim  "/lazyseqs3.png"]
-          [:i "We can replace loops by stream operators (and HOF)"]
-          [:ii "Map (map inc [1 2 3 4]) => (2 3 4 5)"]
-          [:ii "Filter (filter even? [1 2 3 4]) => (2 4)"]
-          [:ii "Reduce (reduce + [1 2 3 4]) => 10"]
-          [:ii "Partition (partition 2 [1 2 3 4]) => ((1 2) (3 4))"]
+          [:i "Stream operators are more declarative than loops"]
+          [:ii "Map"]
+          [:anim  "/map.png"]
+          [:ii "Filter"]
+          [:anim  "/filter.png"]
+          [:ii "Reduce"]
+          [:anim  "/reduce.png"]
+          [:ii "Partition"]
+          [:anim  "/partition.png"]
           [:ii "And so on..."]
-          [:i [:p.quote "It is better to have 100 functions operate on one
+          [:anim  "/perlis.jpg"]
+          [:i [:div
+               [:p.quote "It is better to have 100 functions operate on one
                         data structure than 10 functions on 10 data
-                        structures"
+                        structures"]
                [:p.author "Alan Perlis 1922-1990"]]]
           ]})
 
@@ -79,9 +85,9 @@
           [:code  "nopain.sim/simulate"]
           [:anim  "/galaxy-sim-3.png"]
           [:code-snippet "(simulate update-galaxy 0.1 100 galaxy)"]
-          [:i  "How difficult is paralellize the map part?"]
+          [:i  "How difficult is parallelize the map part?"]
           [:code  "nopain.sim/update-galaxy-2"]
-          [:i  "~50% speed up just by changing map by pmap"]
+          [:i  "~50% speed up just <b>by changing map by pmap</b>"]
           ]})
 
 (def problem-solved
@@ -101,9 +107,9 @@
   {:name "Reducers"
    :text [[:title "Reducers"]
           [:i "The stream abstraction is intrinsically serial"]
-          [:i "The reduce-combine model unleashes parallelism"]
           [:image "/reduce-combine.png"]
-          [:i "The stream abstraction can be minimally modified to be implemented with this model"]
+          [:i "The reduce-combine model unleashes parallelism"]
+          [:i "Can we modify streams to use this model?"]
           [:ii "Before"]
           [:code "nopain.wordcount/wordcount"]
           [:ii "After"]
@@ -115,11 +121,16 @@
 
 (def qa-time
   {:name "Thanks and Q&A"
-   :text [[:title "Thanks and Q&A"]
+   :text [[:page [:div
+                  [:h1.title "Conclusion"]
+                  [:p.conclussion
+                   "Leverage immutability, referential transparency
+                    and declarative models and stop suffering"]
+                  [:div#thanks "Thanks for your time"]
+                  ]]
           ]})
 
-(def slides [intro
-             moore
+(def slides [moore
              twocents
              streams
              galaxy-example

@@ -78,9 +78,10 @@
       (update-in [:pos] #(add-v displacement %)))))
 
 (defn update-galaxy [delta galaxy]
-  (mapv
-    (partial update-star delta galaxy)
-    galaxy))
+  (vec
+    (map
+      (partial update-star delta galaxy)
+      galaxy)))
 
 (defn update-galaxy-2 [delta galaxy]
   (vec

@@ -44,8 +44,18 @@
 (defmethod render-slide :anim [[_ img]]
   (animation img))
 
-(defmethod render-slide :authors [[_ auths]]
-  (append-slide [:ul.authors  (map (fn [a] [:li.author a]) auths )]))
+(defn hublink [site handle]
+  [:a {:href (str ({:pdihub "https://pdihub.hi.inet/"
+                    :github "https://github.com/"} site)
+                  handle)}
+      [:img.icon {:src (format "/%s.png" (name site))}]])
+
+(defmethod render-slide :authors [[_ authors]]
+  (append-slide [:ul.authors
+                 (for [{:keys [name pdihub github]} authors]
+                   [:li.author name "&nbsp;"
+                    (hublink :pdihub pdihub)
+                    (hublink :github github)])]))
 
 (defmethod render-slide :code [[_ code]]
   (append-slide [:pre.code {:class "brush: clojure;"}
@@ -77,13 +87,24 @@
            ((render-slide s) r))]
     (reduce apply-render [] (take (inc pos) text))))
 
+(defn render-progress [progress]
+  [:div#progress-bar
+   [:div#completed {:style (format "width: %2.0f%%" (* progress 100.0))}]])
+
 (defremote get-slide [name pos]
-  (let [{curr-pos :pos {curr-name :name text :text f :run} :data} @current-slide]
+  (let [{curr-pos :pos
+         {curr-name :name text :text f :run} :data} @current-slide
+        size (count text)
+        progress (if (zero? size)
+                   1
+                   (/ (inc curr-pos) size))]
     (if (or (not= name curr-name) (not= pos curr-pos))
       {:name curr-name
        :pos curr-pos
        :run f
-       :html (html (seq (render-slides text curr-pos)))})))
+       :html (html (cons
+                     (render-progress progress)
+                     (render-slides text curr-pos)))})))
 
 
 (defn new-slide [slide]

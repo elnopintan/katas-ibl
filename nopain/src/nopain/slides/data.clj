@@ -8,8 +8,12 @@
    :text [
     [:title "Concurrencia sin dolor"]
     [:static-image "/clojure-icon.gif"]
-    [:authors ["Ignacio  Blasco López" "Sebastián Ortega Torres"]]]})
-
+    [:authors [{:name "Ignacio Blasco López"
+                :pdihub "ibl"
+                :github "elnopintan"}
+               {:name "Sebastián Ortega Torres"
+                :pdihub "sortega"
+                :github "sortega"}]]]})
 
 (def counter
   {:name "counter"
@@ -20,7 +24,7 @@
   {:name "game"
    :run "game"
    :text [[:title "Juego"]
-          [:page 
+          [:page
            [:div
                [:div#register
                [:input#registerinput "" ]
@@ -138,7 +142,7 @@
            ]})
 
 
-(def referencia 
+(def referencia
   {:name "Ref"
    :text [[:title "STM"]
           [:image "/Ref1.jpg"]
@@ -167,7 +171,6 @@
           [:code "nopain.game/read-news"]]})
 
 
-(str @nopain.game/players)
 (def agente
   {:name "Agente"
    :text [[:title "Agent"]
@@ -193,7 +196,7 @@
              counter 
              resolve-counter
              identity-value
-             identity-value-2 
+             identity-value-2
              atomo
              atomo-2
              game
