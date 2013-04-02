@@ -1,5 +1,5 @@
 -module(indent).
--export([indent/1,count_indentation/2]).
+-export([indent/1]).
 
 indent(File) ->
     {ok,Io} = file:open(File,[read]),
