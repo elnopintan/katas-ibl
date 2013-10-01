@@ -1,5 +1,5 @@
 (ns triangle.core)
-;TODO: TEST CODE NOTES
+;; TODO: TEST CODE NOTES
 (defn love [v]
   (let [
         r (let [i (count (take-while #(< % (apply max v)) (iterate #(* 2 %) 1)))
